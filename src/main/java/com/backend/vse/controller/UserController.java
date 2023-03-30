@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @Author 2051196 刘一飞
  * @Date 2023/3/30
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = {"User"})
 @RestController
-@RequestMapping("user")
+//@RequestMapping("user")
 public class UserController {
 
     @Autowired
@@ -25,15 +28,17 @@ public class UserController {
 
     @ApiOperation("根据用户的id和学校返回指定用户（登录）")
     @PostMapping("login")
-    public Result<String> login(@RequestParam("id") Long id, @RequestParam("school") String school) {
-        User user = userService.findUser(id, school);
-        if (user==null){
-            return Result.fail(10001,"用户不存在");
+    public Result<Map<String, String>> login(@RequestBody HashMap<String, String> map) {
+        User user = userService.findUser(Long.parseLong(map.get("id")), map.get("school"));
+        if (user == null) {
+            return Result.fail(10001, "用户不存在");
         }
         //todo:判断密码错误
 
-        String userId=user.getId().toString();
+        String userId = user.getId().toString();
         String token = JwtUtil.sign(userId);
-        return Result.success(token);
+        Map<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("token", token);
+        return Result.success(hashMap);
     }
 }
