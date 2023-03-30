@@ -34,7 +34,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo("1.0.0"))
                 .select()
                 // 指定当前包路径
-                .apis(RequestHandlerSelectors.basePackage("com.backend.tjtablepartyspringboot.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.backend.vse.controller"))
                 // 扫描所有
                 .paths(PathSelectors.any())
                 .build();
@@ -49,7 +49,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo(String version) {
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
-                .title("桌趴接口文档")
+                .title("虚拟仿真实验平台接口文档")
                 .version(version)
                 .build();
     }
