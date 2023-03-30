@@ -1,4 +1,4 @@
-package com.backend.tjtablepartyspringboot.config;
+package com.backend.vse.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

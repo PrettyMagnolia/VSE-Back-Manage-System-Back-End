@@ -1,4 +1,4 @@
-package com.backend.tjtablepartyspringboot.interceptor.util;
+package com.backend.vse.interceptor.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

@@ -1,4 +1,4 @@
-package com.backend.tjtablepartyspringboot.common;
+package com.backend.vse.common;
 
 
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.backend.tjtablepartyspringboot.config;
+package com.backend.vse.config;
 
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;

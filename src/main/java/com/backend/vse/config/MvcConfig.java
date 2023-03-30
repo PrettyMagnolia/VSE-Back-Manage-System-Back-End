@@ -1,5 +1,5 @@
-package com.backend.tjtablepartyspringboot.config;
-import com.backend.tjtablepartyspringboot.interceptor.JwtInterceptor;
+package com.backend.vse.config;
+import com.backend.vse.interceptor.JwtInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

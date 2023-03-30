@@ -1,4 +1,4 @@
-package com.backend.tjtablepartyspringboot;
+package com.backend.vse;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
