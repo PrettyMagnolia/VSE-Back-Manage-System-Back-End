@@ -1,5 +1,6 @@
 package com.backend.vse.service.impl;
 
+import com.backend.vse.common.Result;
 import com.backend.vse.entity.User;
 import com.backend.vse.mapper.UserMapper;
 import com.backend.vse.service.UserService;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUser(Long id, String school) {
-        return userMapper.selectByIDAndSchool(id, school);
+        User user = userMapper.selectByIDAndSchool(id, school);
+        return user;
     }
 }
