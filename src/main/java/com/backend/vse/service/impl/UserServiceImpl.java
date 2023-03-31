@@ -19,8 +19,12 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public User findUser(Long id, String school) {
-        User user = userMapper.selectByIDAndSchool(id, school);
-        return user;
+    public User findUserByIdAndSchool(String id, String school, String password) {
+        return userMapper.selectByIDAndSchool(id, school, password);
+    }
+
+    @Override
+    public User findUserByIndex(Long index) {
+        return userMapper.selectByIndex(index);
     }
 }

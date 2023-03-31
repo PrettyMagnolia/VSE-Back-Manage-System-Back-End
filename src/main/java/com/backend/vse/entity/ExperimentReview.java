@@ -19,7 +19,7 @@ public class ExperimentReview {
     @JsonSerialize(using= ToStringSerializer.class)
     Long reportId;
     @JsonSerialize(using= ToStringSerializer.class)
-    Long id;
+    Long index;
     Byte role;
     Date time;
     float score;

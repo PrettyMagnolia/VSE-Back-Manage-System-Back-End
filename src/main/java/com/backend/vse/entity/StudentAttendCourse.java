@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StudentAttendCourse {
     @JsonSerialize(using= ToStringSerializer.class)
-    Long id;
+    Long index;
     @JsonSerialize(using= ToStringSerializer.class)
     Long courseId;
     float grade;

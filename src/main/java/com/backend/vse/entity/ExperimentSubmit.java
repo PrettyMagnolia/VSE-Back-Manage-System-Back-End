@@ -19,7 +19,7 @@ public class ExperimentSubmit {
     @JsonSerialize(using= ToStringSerializer.class)
     Long reportId;
     @JsonSerialize(using= ToStringSerializer.class)
-    Long id;
+    Long index;
     @JsonSerialize(using= ToStringSerializer.class)
     Long experimentId;
     @JsonSerialize(using= ToStringSerializer.class)
