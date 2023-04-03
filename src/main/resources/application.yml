@@ -6,8 +6,8 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/vse?useSSL=false
-    username: root
+    url: jdbc:mysql://101.42.17.125:3306/vse?useSSL=false
+    username: lyf
     password: Lyf123456
   mail:
     host: smtp.qq.com #???????
