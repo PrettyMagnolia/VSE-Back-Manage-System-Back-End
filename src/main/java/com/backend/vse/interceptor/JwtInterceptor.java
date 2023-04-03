@@ -18,12 +18,14 @@ public class JwtInterceptor implements HandlerInterceptor {
             return true;
         }
         //从 http 请求头中取出 token
-        String token = request.getHeader("token");
-        System.out.println("此处测试是否拿到了token：" + token);
+        String BearerToken = request.getHeader("Authorization");
 
-        if (token == null) {
+        if (BearerToken == null) {
             throw new RuntimeException("无 token ，请重新登陆");
         }
+
+        String token = BearerToken.replace("Bearer ","");
+        System.out.println("此处测试是否拿到了token：" + token);
 
         //验证 token
         JwtUtil.checkSign(token);
