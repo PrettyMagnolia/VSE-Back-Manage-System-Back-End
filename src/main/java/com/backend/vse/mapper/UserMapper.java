@@ -12,8 +12,8 @@ import org.apache.ibatis.annotations.Select;
  */
 @Mapper
 public interface UserMapper {
-    @Select("select * from user where id = '${id}' and school='${school}' and password='${password}'")
-    User selectByIDAndSchool(@Param("id") String id, @Param("school") String school, @Param("password") String password);
+    @Select("select * from user where email = '${email}' and school='${school}' and password='${password}'")
+    User selectByIDAndSchool(@Param("email") String email, @Param("school") String school, @Param("password") String password);
 
     @Select("select * from user where `index` = ${index}")
     User selectByIndex(@Param("index") Long index);

@@ -32,7 +32,7 @@ public class UserController {
     @ApiOperation("根据用户的id和学校返回指定用户（登录）")
     @PostMapping("login")
     public Result<Map<String, String>> login(@RequestBody HashMap<String, String> map) {
-        User user = userService.findUserByIdAndSchool(map.get("id"), map.get("school"), map.get("password"));
+        User user = userService.findUserByIdAndSchool(map.get("username"), map.get("school"), map.get("password"));
         if (user == null) {
             return Result.fail(10001, "用户不存在");
         }
