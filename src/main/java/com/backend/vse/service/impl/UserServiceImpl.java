@@ -27,4 +27,9 @@ public class UserServiceImpl implements UserService {
     public User findUserByIndex(Long index) {
         return userMapper.selectByIndex(index);
     }
+
+    @Override
+    public Integer activateUserAccount(String email, String password, Byte status) {
+        return userMapper.updatePassword(email, password) & userMapper.updateStatus(email, status);
+    }
 }

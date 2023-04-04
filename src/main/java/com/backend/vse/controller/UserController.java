@@ -8,14 +8,19 @@ import com.backend.vse.interceptor.JwtInterceptor;
 import com.backend.vse.interceptor.util.JwtUtil;
 import com.backend.vse.service.UserService;
 import com.backend.vse.tools.MailSender;
+import io.netty.util.Timeout;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author 2051196 刘一飞
@@ -29,6 +34,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @ApiOperation("根据用户的id和学校返回指定用户（登录）")
     @PostMapping("login")
@@ -46,10 +54,23 @@ public class UserController {
             return Result.success(hashMap);
         }
         else { // 用户账户未激活，激活流程
-            // 发送邮箱验证码
-            MailSender.sendEmail(user.getEmail());
-            // todo 验证码存入redis 设置expire
-            return Result.fail(400, "账户需要激活");
+            // 发送邮箱验证码 返回值为验证码
+            StringBuilder code = MailSender.sendEmail(user.getEmail());
+
+            ValueOperations<String, String> operations = redisTemplate.opsForValue();
+
+            String msg;
+            if (operations.get(user.getEmail()) != null) {
+                msg = "验证码已发送，请三分钟后重试";
+            }
+            else {
+                // 验证码存入redis
+                operations.set(user.getEmail(), String.valueOf(code));
+                // 设置过期时间为3分钟
+                redisTemplate.expire(user.getEmail(),3, TimeUnit.MINUTES);
+                msg = "账户需要激活，验证码已发送";
+            }
+            return Result.fail(400, msg);
         }
     }
 
@@ -71,8 +92,21 @@ public class UserController {
 
     @ApiOperation("用户账户激活")
     @PostMapping("activate")
-    public void accountActivate() {
-        // 传入验证码 新的密码
+    public Result<String> accountActivate(@RequestBody HashMap<String, String> map) {
+        String code = map.get("code");
+        String password = map.get("password");
+        String email = map.get("username");
         // 验证验证码是否正确
+
+        ValueOperations<String,String> operations=redisTemplate.opsForValue();
+        if (Objects.equals(code, operations.get(email))) { // 验证码填写正确
+            // 更新用户的密码 和 账户状态
+            Integer result = userService.activateUserAccount(email, password, (byte) 1);
+            if (result == 0) return Result.fail(400,"激活失败");
+            else return Result.success("账户激活成功");
+        }
+        else {
+            return Result.fail(400, "验证码输入错误");
+        }
     }
 }

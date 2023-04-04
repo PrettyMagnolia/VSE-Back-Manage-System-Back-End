@@ -15,6 +15,10 @@ spring:
     password: drvvnzlqxbddcahd #??????
     protocol: smtp #??????
     default-encoding: utf-8
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
 
 mybatis-plus:
   configuration:

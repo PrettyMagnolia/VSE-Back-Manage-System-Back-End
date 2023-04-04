@@ -19,7 +19,7 @@ import java.util.Random;
  */
 public class MailSender {
 
-    public static void sendEmail(String email) throws Exception {
+    public static StringBuilder sendEmail(String email) throws Exception {
         //创建Properties对象
         Properties prop = new Properties();
         // 开启debug调试，以便在控制台查看
@@ -52,10 +52,13 @@ public class MailSender {
         // 邮件的标题
         message.setSubject("虚拟实验仿真系统VSE:请验证您的邮箱");
         // 邮件的文本内容
-        message.setContent("您的验证码为"+ CreateCode(), "text/html;charset=UTF-8");
+        StringBuilder code = CreateCode();
+        message.setContent("您的验证码为"+ code, "text/html;charset=UTF-8");
         // 发送邮件
         ts.sendMessage(message, message.getAllRecipients());
         ts.close();
+
+        return code;
     }
 
 
