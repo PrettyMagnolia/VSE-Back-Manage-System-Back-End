@@ -38,11 +38,16 @@ public class UserController {
         }
         //todo:判断密码错误
 
-        String userIndex = user.getIndex().toString();
-        String token = JwtUtil.sign(userIndex);
-        Map<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("token", token);
-        return Result.success(hashMap);
+        if (user.getStatus() == 1) { // 用户账号已激活，成功登录，返回token
+            String userIndex = user.getIndex().toString();
+            String token = JwtUtil.sign(userIndex);
+            Map<String, String> hashMap = new HashMap<String, String>();
+            hashMap.put("token", token);
+            return Result.success(hashMap);
+        }
+        else { // 用户账户未激活，激活流程，邮箱验证码
+            return Result.fail(400, "账户需要激活");
+        }
     }
 
     @ApiOperation("获取用户信息（登录之后根据token）")

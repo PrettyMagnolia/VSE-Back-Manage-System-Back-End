@@ -1,10 +1,14 @@
 package com.backend.vse.interceptor;
+import com.alibaba.fastjson.JSONObject;
+import com.backend.vse.common.Result;
 import com.backend.vse.interceptor.util.JwtUtil;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class JwtInterceptor implements HandlerInterceptor {
 
@@ -20,14 +24,26 @@ public class JwtInterceptor implements HandlerInterceptor {
         //从 http 请求头中取出 token
         String BearerToken = request.getHeader("Authorization");
 
+        // 判断请求是否带有token
         if (BearerToken == null) {
-            throw new RuntimeException("无 token ，请重新登陆");
+            Result<Object> result = Result.fail(400,"无token，请重新登录");
+            String jsonObjectStr = JSONObject.toJSONString(result);
+            returnJson(response,jsonObjectStr);
+            return false;
         }
-
         String token = BearerToken.replace("Bearer ","");
         System.out.println("此处测试是否拿到了token：" + token);
 
         //验证 token
+        if (!JwtUtil.checkSign(token)) {
+//            throw new RuntimeException("无 token ，请重新登陆");
+            Result<Object> result = Result.fail(400,"无token，请重新登录");
+            String jsonObjectStr = JSONObject.toJSONString(result);
+            returnJson(response,jsonObjectStr);
+            return false;
+        }
+
+
         JwtUtil.checkSign(token);
 
         //验证通过后， 这里测试取出JWT中存放的数据
@@ -39,6 +55,17 @@ public class JwtInterceptor implements HandlerInterceptor {
         userIndex.set(Long.parseLong(userId));
 
         return true;
+    }
+
+    private void returnJson(HttpServletResponse response, String json) throws Exception{
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=utf-8");
+        try (PrintWriter writer = response.getWriter()) {
+            writer.print(json);
+
+        } catch (IOException e) {
+            ;
+        }
     }
 
     @Override
