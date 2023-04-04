@@ -7,6 +7,7 @@ import com.backend.vse.common.Result;
 import com.backend.vse.interceptor.JwtInterceptor;
 import com.backend.vse.interceptor.util.JwtUtil;
 import com.backend.vse.service.UserService;
+import com.backend.vse.tools.MailSender;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,11 @@ public class UserController {
 
     @ApiOperation("根据用户的id和学校返回指定用户（登录）")
     @PostMapping("login")
-    public Result<Map<String, String>> login(@RequestBody HashMap<String, String> map) {
+    public Result<Map<String, String>> login(@RequestBody HashMap<String, String> map) throws Exception {
         User user = userService.findUserByIdAndSchool(map.get("username"), map.get("school"), map.get("password"));
         if (user == null) {
             return Result.fail(10001, "用户不存在");
         }
-        //todo:判断密码错误
 
         if (user.getStatus() == 1) { // 用户账号已激活，成功登录，返回token
             String userIndex = user.getIndex().toString();
@@ -45,7 +45,10 @@ public class UserController {
             hashMap.put("token", token);
             return Result.success(hashMap);
         }
-        else { // 用户账户未激活，激活流程，邮箱验证码
+        else { // 用户账户未激活，激活流程
+            // 发送邮箱验证码
+            MailSender.sendEmail(user.getEmail());
+            // todo 验证码存入redis 设置expire
             return Result.fail(400, "账户需要激活");
         }
     }
@@ -63,7 +66,13 @@ public class UserController {
         Account account = new Account(user.getName(), user.getAge(), user.getGender(), user.getEmail(), user.getAvatar());
         UserInfo userInfo = new UserInfo(account, new String[]{"edit", "delete", "add"}, user.getRole());
 
-
         return Result.success(userInfo);
+    }
+
+    @ApiOperation("用户账户激活")
+    @PostMapping("activate")
+    public void accountActivate() {
+        // 传入验证码 新的密码
+        // 验证验证码是否正确
     }
 }
