@@ -1,8 +1,7 @@
-package com.backend.vse.entity;
+package com.backend.vse.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.backend.vse.entity.Experiment;
+import com.backend.vse.service.ExperimentService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -15,18 +14,21 @@ import java.sql.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "experiment_submit")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ExperimentSubmit {
-    @JsonSerialize(using= ToStringSerializer.class)
-    @TableId(type = IdType.AUTO)
-    Long reportId;
-    @JsonSerialize(using= ToStringSerializer.class)
-    Long id;
+public class ExperimentDto {
     @JsonSerialize(using= ToStringSerializer.class)
     Long experimentId;
     @JsonSerialize(using= ToStringSerializer.class)
     Long courseId;
-    String content;
-    Date time;
+    float weight;
+    Date startTime;
+    Date endTime;
+
+    public ExperimentDto(Experiment experiment){
+        this.experimentId = experiment.getExperimentId();
+        this.courseId = experiment.getCourseId();
+        this.weight = experiment.getWeight();
+        this.startTime = experiment.getStartTime();
+        this.endTime = experiment.getEndTime();
+    }
 }
