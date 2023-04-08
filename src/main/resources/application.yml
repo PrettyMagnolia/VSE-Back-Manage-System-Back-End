@@ -6,15 +6,19 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://139.196.226.104:3306/vse?useSSL=false
-    username: root
-    password: 123456
+    url: jdbc:mysql://101.42.17.125:3306/vse?useSSL=false
+    username: lyf
+    password: Lyf123456
   mail:
     host: smtp.qq.com #???????
     username: 417695971@qq.com #QQ??
     password: drvvnzlqxbddcahd #??????
     protocol: smtp #??????
     default-encoding: utf-8
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
 
 mybatis-plus:
   configuration:

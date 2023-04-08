@@ -14,8 +14,9 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserService {
 
-    User findUserByIdAndSchool(String id, String school, String password);
+    User findUserByIdAndSchool(String email, String school, String password);
 
     User findUserByIndex(Long index);
 
+    Integer activateUserAccount(String email, String password, Byte status);
 }

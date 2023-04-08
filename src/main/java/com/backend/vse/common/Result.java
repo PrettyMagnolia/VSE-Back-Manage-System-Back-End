@@ -16,7 +16,7 @@ public class Result<T> {
     private T data;
 
     public static <T> Result<T> success(T data) {
-        return new Result<>(true, 200, "success", data);
+        return new Result<>(true, 0, "success", data);
     }
 
     public static <T> Result<T> fail(int code, String msg) {
