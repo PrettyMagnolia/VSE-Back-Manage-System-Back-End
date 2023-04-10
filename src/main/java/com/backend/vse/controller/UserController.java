@@ -1,5 +1,6 @@
 package com.backend.vse.controller;
 
+import com.backend.vse.dto.StudentCourseInfoDto;
 import com.backend.vse.entity.User;
 import com.backend.vse.common.Result;
 import com.backend.vse.interceptor.util.JwtUtil;
@@ -40,5 +41,12 @@ public class UserController {
         Map<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("token", token);
         return Result.success(hashMap);
+    }
+
+    @ApiOperation("根据学生index与课程id，返回该学生的基本个人信息，以及在该课程中的所有实验分数")
+    @PostMapping("user/getStudentCourseInfo")
+    public Result<StudentCourseInfoDto> getStudentCourseInfo(Long index, Long courseId) {
+        StudentCourseInfoDto studentCourseInfoDto = userService.selectStudentCourseInfoByIndexAndCourseId(index,courseId);
+        return Result.success(studentCourseInfoDto);
     }
 }

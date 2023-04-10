@@ -17,13 +17,17 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     @JsonSerialize(using= ToStringSerializer.class)
-    Long id;
-    @JsonSerialize(using= ToStringSerializer.class)
     @TableId(type = IdType.AUTO)
     Long index;
+    @JsonSerialize(using= ToStringSerializer.class)
+    Long id;
     String name;
+    String password;
+    int age;
+    String gender;
     String email;
     String school;
     Byte role;
     Byte status;
+    String avatar;
 }

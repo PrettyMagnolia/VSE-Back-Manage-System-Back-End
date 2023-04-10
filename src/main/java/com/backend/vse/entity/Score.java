@@ -1,7 +1,5 @@
 package com.backend.vse.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -13,11 +11,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "student_attend_course")
+@TableName(value = "score")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class StudentAttendCourse {
+public class Score {
     @JsonSerialize(using= ToStringSerializer.class)
     Long index;
     @JsonSerialize(using= ToStringSerializer.class)
     Long courseId;
+    float score;
 }

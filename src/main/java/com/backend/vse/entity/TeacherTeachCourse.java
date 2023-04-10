@@ -1,5 +1,6 @@
 package com.backend.vse.entity;
 
+import com.backend.vse.mapper.TeacherTeachCourseMapper;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -17,8 +18,13 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TeacherTeachCourse {
     @JsonSerialize(using= ToStringSerializer.class)
-    Long id;
+    Long index;
     @JsonSerialize(using= ToStringSerializer.class)
     Long courseId;
     Byte role;
+
+    public TeacherTeachCourse(Long index, Long courseId){
+        this.index = index;
+        this.courseId = courseId;
+    }
 }

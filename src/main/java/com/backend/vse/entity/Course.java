@@ -10,6 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +21,17 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Course {
     @JsonSerialize(using= ToStringSerializer.class)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @TableId(type = IdType.AUTO)
     Long courseId;
     String courseName;
+    String semester;
+    int year;
+
+    public Course(String courseName, String semester, int year){
+        this.courseName = courseName;
+        this.semester = semester;
+        this.year = year;
+    }
 }

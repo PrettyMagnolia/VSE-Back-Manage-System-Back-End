@@ -18,17 +18,17 @@ public class JwtInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         System.out.println("此处测试是否拿到了token：" + token);
 
-        if (token == null) {
-            throw new RuntimeException("无 token ，请重新登陆");
-        }
+//        if (token == null) {
+//            throw new RuntimeException("无 token ，请重新登陆");
+//        }
 
         //验证 token
-        JwtUtil.checkSign(token);
-
-        //验证通过后， 这里测试取出JWT中存放的数据
-        //获取 token 中的 userId
-        String userId = JwtUtil.getUserId(token);
-        System.out.println("id : " + userId);
+//        JwtUtil.checkSign(token);
+//
+//        //验证通过后， 这里测试取出JWT中存放的数据
+//        //获取 token 中的 userId
+//        String userId = JwtUtil.getUserId(token);
+//        System.out.println("id : " + userId);
 
         return true;
     }

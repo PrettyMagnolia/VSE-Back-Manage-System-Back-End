@@ -17,7 +17,7 @@ import java.util.List;
 
 @Api(tags = {"Experiment"})
 @RestController
-@RequestMapping("user")
+@RequestMapping("experiment")
 public class ExperimentController {
     @Autowired
     private ExperimentService experimentService;

@@ -1,5 +1,6 @@
 package com.backend.vse.service.impl;
 
+import com.backend.vse.dto.ExperimentSubmitDto;
 import com.backend.vse.entity.ExperimentReview;
 import com.backend.vse.entity.ExperimentSubmit;
 import com.backend.vse.mapper.ReviewMapper;
@@ -18,12 +19,19 @@ public class ReportServiceImpl implements ReportService {
     ReviewMapper reviewMapper;
 
     @Override
-    public void insertOneSubmit(ExperimentSubmit experimentSubmit) {
-        submitMapper.insert(experimentSubmit);
+    public int insertOneSubmit(ExperimentSubmit experimentSubmit) {
+        return submitMapper.insert(experimentSubmit);
     }
 
     @Override
-    public void insertOneReview(ExperimentReview experimentReview) {
-        reviewMapper.insert(experimentReview);
+    public int insertOneReview(ExperimentReview experimentReview) {
+        return reviewMapper.insert(experimentReview);
+    }
+
+    @Override
+    public ExperimentSubmitDto selectByIndexAndExperimentId(Long index, Long experimentId) {
+        ExperimentSubmit experimentSubmit = submitMapper.selectByIndexAndExperimentId(index, experimentId);
+        ExperimentSubmitDto experimentSubmitDto = new ExperimentSubmitDto(experimentSubmit);
+        return experimentSubmitDto;
     }
 }

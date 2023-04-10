@@ -1,5 +1,7 @@
-package com.backend.vse.entity;
+package com.backend.vse.dto;
 
+import com.backend.vse.entity.Experiment;
+import com.backend.vse.entity.ExperimentSubmit;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -10,21 +12,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.sql.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "experiment_submit")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ExperimentSubmit {
+public class ExperimentSubmitDto {
     @JsonSerialize(using= ToStringSerializer.class)
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @TableId(type = IdType.AUTO)
     Long reportId;
     @JsonSerialize(using= ToStringSerializer.class)
     Long index;
@@ -34,4 +29,13 @@ public class ExperimentSubmit {
     Long courseId;
     String content;
     Date time;
+
+    public ExperimentSubmitDto(ExperimentSubmit experimentSubmit){
+        this.reportId = experimentSubmit.getReportId();
+        this.index = experimentSubmit.getIndex();
+        this.experimentId = experimentSubmit.getCourseId();
+        this.courseId = experimentSubmit.getCourseId();
+        this.content = experimentSubmit.getContent();
+        this.time = experimentSubmit.getTime();
+    }
 }

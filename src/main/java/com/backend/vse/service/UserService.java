@@ -1,5 +1,6 @@
 package com.backend.vse.service;
 
+import com.backend.vse.dto.StudentCourseInfoDto;
 import com.backend.vse.entity.User;
 import com.backend.vse.mapper.UserMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserService {
-
     User findUser(Long id, String school);
-
+    StudentCourseInfoDto selectStudentCourseInfoByIndexAndCourseId(Long index, Long courseId);
 }
