@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserService {
-    User findUser(Long id, String school);
     StudentCourseInfoDto selectStudentCourseInfoByIndexAndCourseId(Long index, Long courseId);
 
     User findUserByIdAndSchool(String email, String school, String password);
