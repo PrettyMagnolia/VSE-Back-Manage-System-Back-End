@@ -1,10 +1,8 @@
 package com.backend.vse.service.impl;
 
-import com.backend.vse.dto.ExperimentDto;
-import com.backend.vse.dto.ScoreDto;
+import com.backend.vse.dto.StudentScoreDto;
 import com.backend.vse.mapper.ScoreMapper;
 import com.backend.vse.service.ScoreService;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +15,8 @@ public class ScoreServiceImpl implements ScoreService {
     ScoreMapper scoreMapper;
 
     @Override
-    public List<ScoreDto> selectScoreListByCourseId(Long courseId) {
-        List<ScoreDto> scoreDtoList = scoreMapper.selectScoreListByCourseId(courseId).stream()
-                                                .map(score -> new ScoreDto(score))
-                                                .collect(Collectors.toList());
-        return scoreDtoList;
+    public List<StudentScoreDto> selectScoreListByCourseId(Long courseId) {
+        List<StudentScoreDto> studentScoreDtoList = scoreMapper.selectScoreListByCourseId(courseId);
+        return studentScoreDtoList;
     }
 }

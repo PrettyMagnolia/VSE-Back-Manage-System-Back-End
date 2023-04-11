@@ -18,14 +18,11 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StudentCourseInfoDto {
     @JsonSerialize(using= ToStringSerializer.class)
-    Long index;
-    @JsonSerialize(using= ToStringSerializer.class)
     Long id;
     String name;
-    int age;
     String gender;
-    String email;
     String school;
+    String avatar;
     @TableField(exist = false)
-    List<ExperimentScoreDto> experimentScoreList;
+    List<ExperimentScoreDto> experimentList;
 }

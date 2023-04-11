@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     public StudentCourseInfoDto selectStudentCourseInfoByIndexAndCourseId(Long index, Long courseId) {
         StudentCourseInfoDto studentCourseInfoDto = userMapper.selectStudentCourseInfoByIndexAndCourseId(index,courseId);
         List<ExperimentScoreDto> experimentScoreDtoList = experimentMapper.selectExperimentScoreByIndexAndCourseId(index,courseId);
-        studentCourseInfoDto.setExperimentScoreList(experimentScoreDtoList);
+        studentCourseInfoDto.setExperimentList(experimentScoreDtoList);
         return studentCourseInfoDto;
     }
 }

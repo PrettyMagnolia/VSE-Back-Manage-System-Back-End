@@ -23,14 +23,14 @@ import java.util.Map;
 
 @Api(tags = {"Course"})
 @RestController
-@RequestMapping("course")
+//@RequestMapping("course")
 @Transactional
 public class CourseController {
     @Autowired
     CourseService courseService;
 
     @ApiOperation("新增一门课程")
-    @PostMapping("postOneCourse")
+    @PostMapping("addcourse")
     public Result<String> postOneCourse(@ApiParam(name="courseName", value="课程名", required = true)
                                 @RequestParam("courseName") String courseName,
                               @ApiParam(name="semester", value="开课学期，可填spring或fall", required = true)

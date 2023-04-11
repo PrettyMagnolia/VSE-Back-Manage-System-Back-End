@@ -1,7 +1,6 @@
 package com.backend.vse.dto;
 
 import com.backend.vse.entity.Score;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -13,13 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ScoreDto {
+public class StudentScoreDto {
     @JsonSerialize(using= ToStringSerializer.class)
-    Long index;
+    Long studentId;
+    String studentName;
     float score;
-
-    public ScoreDto(Score score){
-        this.index = score.getIndex();
-        this.score = score.getScore();
-    }
 }

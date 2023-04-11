@@ -17,13 +17,13 @@ import java.util.List;
 
 @Api(tags = {"Experiment"})
 @RestController
-@RequestMapping("experiment")
+//@RequestMapping("experiment")
 public class ExperimentController {
     @Autowired
     private ExperimentService experimentService;
 
     @ApiOperation("根据课程id，返回该课程的所有实验信息")
-    @GetMapping("getExperimentsByCourseId")
+    @GetMapping("expermentincourse")
     public Result<List<ExperimentDto>> getExperimentsByCourseId(@ApiParam(name="courseId", value="课程id", required = true)
                                              @RequestParam("courseId") Long courseId)
     {

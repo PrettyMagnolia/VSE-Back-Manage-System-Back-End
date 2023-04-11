@@ -30,25 +30,21 @@ public interface UserMapper extends BaseMapper<User> {
     @Results(
             {
                     //column为数据库字段名，property为实体类字段名
-                    @Result(column = "index",property = "index"),
                     @Result(column = "id",property = "id"),
                     @Result(column = "name",property = "name"),
-                    @Result(column = "age",property = "age"),
                     @Result(column = "gender",property = "gender"),
-                    @Result(column = "email",property = "email"),
                     @Result(column = "school",property = "school"),
-//                    @Result(column = "index,course_id,experiment_id",property = "experimentScoreList",javaType = List.class,
-//                            one=@One(select = "com.backend.vse.mapper.ExperimentMapper.selectExperimentScoreByIndexAndCourseAndExperimentId")
-//                    )
+                    @Result(column="avatar", property = "avatar")
             }
     )
+    StudentCourseInfoDto selectStudentCourseInfoByIndexAndCourseId(@Param("index") Long index, @Param("courseId") Long courseId);
 
     @Update("UPDATE user SET password='${password}' WHERE email='${email}'")
     Integer updatePassword(@Param("email") String email,@Param("password") String password);
 
     @Update("UPDATE user SET status='${status}' WHERE email='${email}'")
     Integer updateStatus(@Param("email") String email,@Param("status") Byte status);
-    StudentCourseInfoDto selectStudentCourseInfoByIndexAndCourseId(@Param("index") Long index, @Param("courseId") Long courseId);
+
 
 
 }
