@@ -14,8 +14,9 @@ public class MvcConfig implements WebMvcConfigurer {
      * */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 拦截除了登录login的所有资源
         registry.addInterceptor(jwtInterceptor())
-                .addPathPatterns("/user/**").excludePathPatterns("/user/login").excludePathPatterns("/user/register").excludePathPatterns("/user/email");
+                .addPathPatterns("/account");
     }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

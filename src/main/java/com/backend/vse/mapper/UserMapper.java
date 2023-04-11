@@ -7,6 +7,10 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * @Author 2051196 刘一飞
@@ -15,8 +19,8 @@ import java.util.List;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-    @Select("select * from user where id = '${id}' and school='${school}'")
-    User selectByIDAndSchool(@Param("id") Long id, @Param("school") String school);
+    @Select("SELECT * FROM user WHERE email = '${email}' AND school='${school}' AND password='${password}'")
+    User selectByIDAndSchool(@Param("email") String email, @Param("school") String school, @Param("password") String password);
     @Select("SELECT * FROM user WHERE `index`=${index}")
     User selectByIndex(@Param("index") Long index);
 
@@ -38,5 +42,13 @@ public interface UserMapper extends BaseMapper<User> {
 //                    )
             }
     )
+
+    @Update("UPDATE user SET password='${password}' WHERE email='${email}'")
+    Integer updatePassword(@Param("email") String email,@Param("password") String password);
+
+    @Update("UPDATE user SET status='${status}' WHERE email='${email}'")
+    Integer updateStatus(@Param("email") String email,@Param("status") Byte status);
     StudentCourseInfoDto selectStudentCourseInfoByIndexAndCourseId(@Param("index") Long index, @Param("courseId") Long courseId);
+
+
 }

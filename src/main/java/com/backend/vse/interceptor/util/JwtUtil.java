@@ -87,7 +87,8 @@ public class JwtUtil {
             verifier.verify(token);
             return true;
         } catch (JWTVerificationException e) {
-            throw new RuntimeException("token 无效，请重新获取");
+//            throw new RuntimeException("token 无效，请重新获取");
+            return false;
         }
     }
 }

@@ -25,9 +25,18 @@ public class UserServiceImpl implements UserService {
     private ExperimentMapper experimentMapper;
 
     @Override
-    public User findUser(Long id, String school) {
-        User user = userMapper.selectByIDAndSchool(id, school);
-        return user;
+    public User findUserByIdAndSchool(String email, String school, String password) {
+        return userMapper.selectByIDAndSchool(email, school, password);
+    }
+
+    @Override
+    public User findUserByIndex(Long index) {
+        return userMapper.selectByIndex(index);
+    }
+
+    @Override
+    public Integer activateUserAccount(String email, String password, Byte status) {
+        return userMapper.updatePassword(email, password) & userMapper.updateStatus(email, status);
     }
 
     @Override

@@ -136,6 +136,11 @@
             <version>5.4.32.Final</version>
         </dependency>
 
+        <!--        redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
