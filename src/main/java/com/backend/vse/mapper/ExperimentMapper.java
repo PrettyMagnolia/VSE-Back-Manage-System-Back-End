@@ -3,6 +3,7 @@ package com.backend.vse.mapper;
 import com.backend.vse.dto.ExperimentScoreDto;
 import com.backend.vse.entity.Experiment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.lettuce.core.output.ScoredValueListOutput;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -27,4 +28,7 @@ public interface ExperimentMapper extends BaseMapper<Experiment> {
     })
     List<ExperimentScoreDto> selectExperimentScoreByIndexAndCourseId(@Param("index") Long index,
                                                                      @Param("courseId") Long courseId);
+
+    @Select("SELECT * FROM experiment WHERE experiment_id=#{experimentId}")
+    Experiment selectExperimentById(@Param("experimentId") Long experimentId);
 }

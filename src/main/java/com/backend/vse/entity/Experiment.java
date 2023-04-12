@@ -27,4 +27,8 @@ public class Experiment {
     float weight;
     Date startTime;
     Date endTime;
+    String experimentName;
+    String content;
+    String instructor;
+    String template;
 }
