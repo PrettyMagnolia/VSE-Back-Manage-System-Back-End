@@ -21,6 +21,9 @@ public class ExperimentServiceImpl implements ExperimentService {
     @Override
     public List<ExperimentDto> selectExperimentByCourseId(Long courseId) {
         List<Experiment> experimentList = experimentMapper.selectExperimentsByCourseId(courseId);
+        if(experimentList == null || experimentList.size() == 0){
+            return new ArrayList<ExperimentDto>();
+        }
         List<ExperimentDto> experimentDtoList = experimentList.stream().map(experiment -> new ExperimentDto(experiment))
                                                                         .collect(Collectors.toList());
         return experimentDtoList;
@@ -29,6 +32,9 @@ public class ExperimentServiceImpl implements ExperimentService {
     @Override
     public ExperimentContentDto selectExperimentContentById(Long experimentId) {
         Experiment experiment = experimentMapper.selectExperimentById(experimentId);
+        if(experiment == null){
+            return null;
+        }
         ExperimentContentDto experimentContentDto = new ExperimentContentDto(experiment);
         return experimentContentDto;
     }
@@ -36,6 +42,9 @@ public class ExperimentServiceImpl implements ExperimentService {
     @Override
     public ExperimentTemplateDto selectExperimentTemplateById(Long experimentId) {
         Experiment experiment = experimentMapper.selectExperimentById(experimentId);
+        if(experiment == null){
+            return null;
+        }
         ExperimentTemplateDto experimentTemplateDto = new ExperimentTemplateDto(experiment);
         return experimentTemplateDto;
     }

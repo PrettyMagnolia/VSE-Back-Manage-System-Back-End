@@ -31,6 +31,9 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ExperimentSubmitDto selectByIndexAndExperimentId(Long index, Long experimentId) {
         ExperimentSubmit experimentSubmit = submitMapper.selectByIndexAndExperimentId(index, experimentId);
+        if(experimentSubmit == null){
+            return null;
+        }
         ExperimentSubmitDto experimentSubmitDto = new ExperimentSubmitDto(experimentSubmit);
         return experimentSubmitDto;
     }

@@ -31,6 +31,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public int insertOneTeach(TeacherTeachCourse teacherTeachCourse) {
+        if(teacherTeachCourse == null){
+            return 0;
+        }
         //如果没有传角色，就在这里填补角色
         if(teacherTeachCourse.getRole() == null){
             Long index = teacherTeachCourse.getIndex();
@@ -43,6 +46,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public int insertOneAttend(StudentAttendCourse studentAttendCourse) {
+        if(studentAttendCourse == null){
+            return 0;
+        }
         return studentAttendCourseMapper.insert(studentAttendCourse.getIndex(),studentAttendCourse.getCourseId());
     }
 }
