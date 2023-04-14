@@ -10,4 +10,6 @@ public interface ReportService {
     int insertOneSubmit(ExperimentSubmit experimentSubmit);
     int insertOneReview(ExperimentReview experimentReview);
     ExperimentSubmitDto selectByIndexAndExperimentId(Long index, Long experimentId);
+
+    ExperimentSubmit submitReport(ExperimentSubmit experimentSubmit);
 }

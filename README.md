@@ -2,43 +2,19 @@
 
 虚拟仿真实验平台后端
 
+## 快速开始
 
+- 仓库地址：https://github.com/PrettyMagnolia/VSE-Back-Manage-System-Back
+- API测试：http://139.196.226.104:8001/api/swagger-ui.html
 
-## 自动化部署
+## OSS云存储
 
-```yaml
-name: Java CI with Maven
+[`OssService`](./src/main/java/com/backend/vse/service/OssService.java)
+内两个函数，`String uploadFile(MultipartFile file);`用于存储文件，`String uploadLongText(String content,String key);`
+用于存储文本字符串
 
-on:
-  push:
-    branches: [ "zst" ]
-  pull_request:
-    branches: [ "zst" ]
+## 注意事项
 
-jobs:
-  build:
+- 时间格式先统一为 `yyyy-[m]m-[d]d hh:mm:ss[.f...].`
+- 时间类型为`Timestamp`
 
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
-
-      - name: deploy
-        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
-        with:
-          host: ${{ secrets.host }}
-          user: ${{secrets.user}}
-          pass: ${{secrets.pass}}
-          scp: |
-            './target/*.jar' => /home/ubuntu/ves/
-          last_ssh: |
-            nohup java -jar /home/ubuntu/ves*.jar > ves.log 2>&1 &
-```

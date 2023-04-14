@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 //import javax.persistence.GenerationType;
 //import javax.persistence.Id;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
@@ -33,5 +34,5 @@ public class ExperimentSubmit {
     @JsonSerialize(using= ToStringSerializer.class)
     Long courseId;
     String content;
-    Date time;
+    Timestamp time;
 }
