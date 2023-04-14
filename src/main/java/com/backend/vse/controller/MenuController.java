@@ -65,7 +65,7 @@ public class MenuController {
             result.remove(1);
 
             ArrayList<HashMap<String, Object>> children = menuService.getCourseMenuList(userId);
-            if (children.size() == 0) {
+            if (children == null || children.size() == 0) {
                 return Result.success(result);
             }
 
