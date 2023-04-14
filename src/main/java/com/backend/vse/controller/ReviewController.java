@@ -5,6 +5,8 @@ import com.backend.vse.dto.CourseExperimentDto;
 import com.backend.vse.dto.GiveReportScoreDto;
 import com.backend.vse.dto.StudentSubmitDto;
 import com.backend.vse.service.ReviewService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,7 @@ import java.util.ArrayList;
  * @author 赵帅涛
  * @date 2023/04/14
  */
+@Api(tags = "评阅实验报告")
 @RestController
 @RequestMapping("review")
 public class ReviewController {
@@ -21,6 +24,7 @@ public class ReviewController {
     @Autowired
     ReviewService reviewService;
 
+    @ApiOperation("获取当前课程的所有实验")
     @GetMapping("experimentlist")
     public Result<ArrayList<CourseExperimentDto>> getCourseExperimentList(@RequestParam("courseId") String courseId) {
         long cId;
@@ -39,6 +43,7 @@ public class ReviewController {
         return Result.success(result);
     }
 
+    @ApiOperation("获取当前实验的学生提交的实验报告")
     @GetMapping("reportlist")
     public Result<ArrayList<StudentSubmitDto>> getReportList(@RequestParam("courseId") String courseId, @RequestParam("experimentId") String experimentId) {
         long cId, eId;
@@ -59,6 +64,7 @@ public class ReviewController {
         return Result.success(result);
     }
 
+    @ApiOperation("给某实验报告打分")
     @PostMapping("score")
     public Result<Boolean> giveScore(@RequestBody GiveReportScoreDto scoreDto) {
         boolean res = false;
