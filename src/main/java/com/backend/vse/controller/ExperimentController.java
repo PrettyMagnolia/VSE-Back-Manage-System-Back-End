@@ -30,7 +30,7 @@ public class ExperimentController {
     }
 
     @ApiOperation("根据课程id，返回该课程的所有实验信息")
-    @GetMapping("expermentincourse")
+    @GetMapping("experimentincourse")
     public Result<List<ExperimentDto>> getExperimentsByCourseId(@ApiParam(name="courseId", value="课程id", required = true)
                                              @RequestParam("courseId") Long courseId)
     {
