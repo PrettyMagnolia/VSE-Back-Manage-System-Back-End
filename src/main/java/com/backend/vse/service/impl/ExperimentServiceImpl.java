@@ -1,5 +1,6 @@
 package com.backend.vse.service.impl;
 
+import com.backend.vse.dto.ExperimentBriefInfo;
 import com.backend.vse.dto.ExperimentContentDto;
 import com.backend.vse.dto.ExperimentDto;
 import com.backend.vse.dto.ExperimentTemplateDto;
@@ -17,6 +18,11 @@ import java.util.stream.Collectors;
 public class ExperimentServiceImpl implements ExperimentService {
     @Autowired
     ExperimentMapper experimentMapper;
+
+    @Override
+    public List<ExperimentBriefInfo> selectAllExperimentsIdAndName() {
+        return experimentMapper.selectAllExperimentsIdAndName();
+    }
 
     @Override
     public List<ExperimentDto> selectExperimentByCourseId(Long courseId) {

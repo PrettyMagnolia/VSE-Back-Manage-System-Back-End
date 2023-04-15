@@ -1,6 +1,7 @@
 package com.backend.vse.controller;
 
 import com.backend.vse.common.Result;
+import com.backend.vse.dto.ExperimentBriefInfo;
 import com.backend.vse.dto.ExperimentContentDto;
 import com.backend.vse.dto.ExperimentDto;
 import com.backend.vse.dto.ExperimentTemplateDto;
@@ -20,6 +21,12 @@ import java.util.List;
 public class ExperimentController {
     @Autowired
     private ExperimentService experimentService;
+
+    @ApiOperation("获取所有实验信息（实验id和实验名称）")
+    @GetMapping("allexperiment")
+    public Result<List<ExperimentBriefInfo>> getAllExperimentsIdAndName() {
+        return Result.success(experimentService.selectAllExperimentsIdAndName());
+    }
 
     @ApiOperation("根据课程id，返回该课程的所有实验信息")
     @GetMapping("expermentincourse")

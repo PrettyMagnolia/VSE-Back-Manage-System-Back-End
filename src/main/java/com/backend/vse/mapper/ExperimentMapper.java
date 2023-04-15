@@ -1,5 +1,6 @@
 package com.backend.vse.mapper;
 
+import com.backend.vse.dto.ExperimentBriefInfo;
 import com.backend.vse.dto.ExperimentScoreDto;
 import com.backend.vse.entity.Experiment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -15,6 +16,10 @@ import java.util.List;
  */
 @Mapper
 public interface ExperimentMapper extends BaseMapper<Experiment> {
+
+    @Select("SELECT experiment_id, experiment_name, instructor, template FROM experiment")
+    List<ExperimentBriefInfo> selectAllExperimentsIdAndName();
+
     @Select("SELECT * FROM experiment WHERE course_id=${courseId}")
     List<Experiment> selectExperimentsByCourseId(@Param("courseId") Long courseId);
 
