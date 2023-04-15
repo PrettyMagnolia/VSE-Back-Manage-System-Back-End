@@ -21,7 +21,7 @@ import java.util.Map;
  * @author 赵帅涛
  * @date 2023/04/14
  */
-@Api(tags = "评阅实验报告")
+@Api(tags = "Review")
 @RestController
 @RequestMapping("review")
 public class ReviewController {
@@ -92,6 +92,7 @@ public class ReviewController {
         return Result.success(res);
     }
 
+    @ApiOperation("获取课程的详细信息")
     @GetMapping("course-info")
     public Result<Course> getCourseInfo(@RequestParam("courseId") String courseId) {
         long cId;

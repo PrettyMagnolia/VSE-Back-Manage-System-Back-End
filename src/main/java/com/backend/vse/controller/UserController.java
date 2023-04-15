@@ -114,6 +114,7 @@ public class UserController {
     @Autowired
     private OssService ossService;
 
+    @ApiOperation("修改头像")
     @PostMapping("user/change-avatar")
     public Result<Map<String, Object>> changeAvatar(@RequestPart("file") MultipartFile avatar) {
         String url;
