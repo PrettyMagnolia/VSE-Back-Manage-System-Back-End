@@ -45,6 +45,9 @@ public interface UserMapper extends BaseMapper<User> {
     @Update("UPDATE user SET status='${status}' WHERE email='${email}'")
     Integer updateStatus(@Param("email") String email,@Param("status") Byte status);
 
+    @Update("UPDATE user SET avatar = '${avatar}' WHERE `index`=#{id}")
+    void updateUserAvatar(@Param("avatar") String avatar,@Param("id") Long id);
+
 
 
 }

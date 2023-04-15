@@ -16,7 +16,7 @@ public interface SubmitMapper extends BaseMapper<ExperimentSubmit> {
     boolean firstInsertSubmit(@Param("index") Long index, @Param("experimentId") Long experimentId,
                               @Param("courseId") Long courseId, @Param("url") String content, @Param("time") Timestamp submitTime);
 
-    @Select("SELECT LAST_INSERT_ID() from experiment_submit")
+    @Select("SELECT LAST_INSERT_ID() from experiment_submit LIMIT 1")
     Long getLastReportId();
 
     @Select("SELECT * FROM experiment_submit WHERE `index`=#{index} AND experiment_id=#{experimentId} AND course_id=#{courseId} LIMIT 1")

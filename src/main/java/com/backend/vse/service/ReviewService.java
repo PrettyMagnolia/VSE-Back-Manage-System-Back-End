@@ -1,7 +1,9 @@
 package com.backend.vse.service;
 
+import com.backend.vse.dto.Account;
 import com.backend.vse.dto.CourseExperimentDto;
 import com.backend.vse.dto.StudentSubmitDto;
+import com.backend.vse.entity.Course;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,4 +23,8 @@ public interface ReviewService {
 
     // 获取当前课程的实验项目
     ArrayList<CourseExperimentDto> getCourseExperimentList(Long experimentId);
+
+    Course getCourseInfo(Long courseId);
+
+    ArrayList<Account> getStudentList(Long courseId);
 }

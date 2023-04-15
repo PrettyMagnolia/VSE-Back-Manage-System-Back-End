@@ -1,7 +1,9 @@
 package com.backend.vse.mapper;
 
+import com.backend.vse.dto.Account;
 import com.backend.vse.dto.CourseExperimentDto;
 import com.backend.vse.dto.StudentSimpleDto;
+import com.backend.vse.entity.Course;
 import com.backend.vse.entity.ExperimentReport;
 import com.backend.vse.entity.ExperimentReview;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -41,4 +43,12 @@ public interface ReviewMapper extends BaseMapper<ExperimentReview> {
             "                        time    = current_timestamp, " +
             "                        score   = #{score} ")
     Boolean setReportScore(@Param("reportId") Long reportId, @Param("reviewerId") Long reviewerId, @Param("role") Boolean reviewRole, @Param("score") Float score);
+
+    @Select("SELECT * FROM course WHERE course_id = #{id}")
+    Course getCourseInfo(@Param("id") Long courseId);
+
+    @Select("SELECT name, age, gender, email, avatar " +
+            "FROM user, student_attend_course s " +
+            "WHERE user.`index` = s.`index` AND s.course_id = #{courseId};")
+    ArrayList<Account> getStudentList(@Param("courseId") Long courseId);
 }

@@ -1,8 +1,10 @@
 package com.backend.vse.service.impl;
 
+import com.backend.vse.dto.Account;
 import com.backend.vse.dto.CourseExperimentDto;
 import com.backend.vse.dto.StudentSimpleDto;
 import com.backend.vse.dto.StudentSubmitDto;
+import com.backend.vse.entity.Course;
 import com.backend.vse.entity.ExperimentReport;
 import com.backend.vse.entity.User;
 import com.backend.vse.mapper.ReviewMapper;
@@ -75,4 +77,16 @@ public class ReviewServiceImpl implements ReviewService {
     public ArrayList<CourseExperimentDto> getCourseExperimentList(Long experimentId) {
         return reviewMapper.getCourseExperimentList(experimentId);
     }
+
+    @Override
+    public Course getCourseInfo(Long courseId) {
+        return reviewMapper.getCourseInfo(courseId);
+    }
+
+    @Override
+    public ArrayList<Account> getStudentList(Long courseId) {
+        return reviewMapper.getStudentList(courseId);
+    }
+
+
 }
