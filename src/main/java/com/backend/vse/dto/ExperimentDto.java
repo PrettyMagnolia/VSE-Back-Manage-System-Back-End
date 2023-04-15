@@ -9,26 +9,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExperimentDto {
-    @JsonSerialize(using= ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     Long experimentId;
-    @JsonSerialize(using= ToStringSerializer.class)
-    Long courseId;
-    float weight;
+    String experimentName;
+    String instructor;
+    String template;
+    float score;
     Date startTime;
     Date endTime;
-
-    public ExperimentDto(Experiment experiment){
-        this.experimentId = experiment.getExperimentId();
-        this.courseId = experiment.getCourseId();
-        this.weight = experiment.getWeight();
-        this.startTime = experiment.getStartTime();
-        this.endTime = experiment.getEndTime();
-    }
 }

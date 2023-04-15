@@ -1,29 +1,29 @@
 package com.backend.vse.entity;
 
-
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
 
+/**
+ * @Author 2051196 刘一飞
+ * @Date 2023/4/15
+ * @JDKVersion 17.0.4
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "experiment")
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Experiment {
+@TableName(value = "course_experiment")
+public class CourseExperiment {
     @JsonSerialize(using= ToStringSerializer.class)
-    @TableId(type = IdType.AUTO)
+    Long courseId;
+    @JsonSerialize(using= ToStringSerializer.class)
     Long experimentId;
-    @JsonSerialize(using= ToStringSerializer.class)
-    String experimentName;
-    String instructor;
-    String template;
+    Date startTime;
+    Date endTime;
+    float score;
 }

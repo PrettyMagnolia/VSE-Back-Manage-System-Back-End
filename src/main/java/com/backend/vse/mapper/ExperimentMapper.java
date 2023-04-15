@@ -2,6 +2,7 @@ package com.backend.vse.mapper;
 
 import com.backend.vse.dto.ExperimentBriefInfo;
 import com.backend.vse.dto.ExperimentScoreDto;
+import com.backend.vse.entity.CourseExperiment;
 import com.backend.vse.entity.Experiment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import io.lettuce.core.output.ScoredValueListOutput;
@@ -17,11 +18,14 @@ import java.util.List;
 @Mapper
 public interface ExperimentMapper extends BaseMapper<Experiment> {
 
-    @Select("SELECT experiment_id, experiment_name, instructor, template FROM experiment")
-    List<ExperimentBriefInfo> selectAllExperimentsIdAndName();
+    @Select("SELECT * FROM experiment")
+    List<Experiment> selectAllExperiments();
 
-    @Select("SELECT * FROM experiment WHERE course_id=${courseId}")
-    List<Experiment> selectExperimentsByCourseId(@Param("courseId") Long courseId);
+    @Select("SELECT * FROM experiment WHERE experiment_id=#{experimentId}")
+    Experiment selectExperimentById(@Param("experimentId") Long experimentId);
+
+    @Select("SELECT * FROM course_experiment WHERE course_id=${courseId}")
+    List<CourseExperiment> selectExperimentsByCourseId(@Param("courseId") Long courseId);
 
     @Select("SELECT experiment_name,score,content FROM experiment_submit JOIN experiment USING(experiment_id) " +
             "JOIN experiment_review USING(report_id) " +
@@ -34,6 +38,5 @@ public interface ExperimentMapper extends BaseMapper<Experiment> {
     List<ExperimentScoreDto> selectExperimentScoreByIndexAndCourseId(@Param("index") Long index,
                                                                      @Param("courseId") Long courseId);
 
-    @Select("SELECT * FROM experiment WHERE experiment_id=#{experimentId}")
-    Experiment selectExperimentById(@Param("experimentId") Long experimentId);
+
 }

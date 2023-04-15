@@ -5,6 +5,7 @@ import com.backend.vse.dto.ExperimentBriefInfo;
 import com.backend.vse.dto.ExperimentContentDto;
 import com.backend.vse.dto.ExperimentDto;
 import com.backend.vse.dto.ExperimentTemplateDto;
+import com.backend.vse.entity.Experiment;
 import com.backend.vse.mapper.ExperimentMapper;
 import com.backend.vse.service.ExperimentService;
 import io.swagger.annotations.Api;
@@ -22,10 +23,10 @@ public class ExperimentController {
     @Autowired
     private ExperimentService experimentService;
 
-    @ApiOperation("获取所有实验信息（实验id和实验名称）")
+    @ApiOperation("获取所有实验信息")
     @GetMapping("allexperiment")
-    public Result<List<ExperimentBriefInfo>> getAllExperimentsIdAndName() {
-        return Result.success(experimentService.selectAllExperimentsIdAndName());
+    public Result<List<Experiment>> getAllExperiments() {
+        return Result.success(experimentService.selectAllExperiments());
     }
 
     @ApiOperation("根据课程id，返回该课程的所有实验信息")
