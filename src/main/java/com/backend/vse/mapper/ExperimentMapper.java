@@ -38,5 +38,9 @@ public interface ExperimentMapper extends BaseMapper<Experiment> {
     List<ExperimentScoreDto> selectExperimentScoreByIndexAndCourseId(@Param("index") Long index,
                                                                      @Param("courseId") Long courseId);
 
+    @Update("UPDATE course_experiment SET start_time=#{courseExperiment.startTime}, end_time=#{courseExperiment.endTime}, score=#{courseExperiment.score} WHERE course_id=#{courseExperiment.courseId} AND experiment_id=${courseExperiment.experimentId}")
+    int updateExperimentInCourse(@Param("courseExperiment") CourseExperiment courseExperiment);
 
+    @Delete("DELETE FROM course_experiment WHERE course_id=${courseId} AND experiment_id=${experimentId}")
+    int deleteExperimentInCourse(@Param("courseId") Long courseId, @Param("experimentId") Long experimentId);
 }

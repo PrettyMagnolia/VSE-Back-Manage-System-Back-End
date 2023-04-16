@@ -29,10 +29,10 @@ public class ExperimentServiceImpl implements ExperimentService {
     public List<ExperimentDto> selectExperimentByCourseId(Long courseId) {
         List<CourseExperiment> courseExperimentList = experimentMapper.selectExperimentsByCourseId(courseId);
         ArrayList<ExperimentDto> res = new ArrayList<>();
-        if(courseExperimentList == null || courseExperimentList.size() == 0){
+        if (courseExperimentList == null || courseExperimentList.size() == 0) {
             return res;
         }
-        for (CourseExperiment cs: courseExperimentList) {
+        for (CourseExperiment cs : courseExperimentList) {
             Experiment experiment = experimentMapper.selectExperimentById(cs.getExperimentId());
             ExperimentDto experimentDto = new ExperimentDto(experiment.getExperimentId(), experiment.getExperimentName(), experiment.getInstructor(), experiment.getTemplate(), cs.getScore(), cs.getStartTime(), cs.getEndTime());
             res.add(experimentDto);
@@ -43,7 +43,7 @@ public class ExperimentServiceImpl implements ExperimentService {
     @Override
     public ExperimentContentDto selectExperimentContentById(Long experimentId) {
         Experiment experiment = experimentMapper.selectExperimentById(experimentId);
-        if(experiment == null){
+        if (experiment == null) {
             return null;
         }
         ExperimentContentDto experimentContentDto = new ExperimentContentDto(experiment);
@@ -53,10 +53,20 @@ public class ExperimentServiceImpl implements ExperimentService {
     @Override
     public ExperimentTemplateDto selectExperimentTemplateById(Long experimentId) {
         Experiment experiment = experimentMapper.selectExperimentById(experimentId);
-        if(experiment == null){
+        if (experiment == null) {
             return null;
         }
         ExperimentTemplateDto experimentTemplateDto = new ExperimentTemplateDto(experiment);
         return experimentTemplateDto;
+    }
+
+    @Override
+    public int modifyExperimentInCourse(CourseExperiment courseExperiment) {
+        return experimentMapper.updateExperimentInCourse(courseExperiment);
+    }
+
+    @Override
+    public int deleteExperimentInCourse(Long courseId, Long experimentId) {
+        return experimentMapper.deleteExperimentInCourse(courseId, experimentId);
     }
 }
