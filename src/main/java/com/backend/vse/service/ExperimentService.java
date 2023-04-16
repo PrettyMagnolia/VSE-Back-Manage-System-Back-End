@@ -15,9 +15,11 @@ public interface ExperimentService {
 
     List<Experiment> selectAllExperiments();
     List<ExperimentDto> selectExperimentByCourseId(Long courseId);
+    List<Experiment> selectExceptExperimentByCourseId(Long courseId);
     ExperimentContentDto selectExperimentContentById(Long experimentId);
     ExperimentTemplateDto selectExperimentTemplateById(Long experimentId);
 
+    int insertExperimentInCourse(Long courseId, Long experimentId);
     int modifyExperimentInCourse(CourseExperiment courseExperiment);
     int deleteExperimentInCourse(Long courseId, Long experimentId);
 }

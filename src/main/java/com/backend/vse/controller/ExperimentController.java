@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,14 @@ public class ExperimentController {
                                                                 @RequestParam("courseId") Long courseId) {
         List<ExperimentDto> experimentDtoList = experimentService.selectExperimentByCourseId(courseId);
         return Result.success(experimentDtoList);
+    }
+
+    @ApiOperation("根据课程id，返回该课程不包含实验信息")
+    @GetMapping("experimentnotincourse")
+    public Result<List<Experiment>> getExceptExperimentsByCourseId(@ApiParam(name = "courseId", value = "课程id", required = true)
+                                                                      @RequestParam("courseId") Long courseId) {
+        List<Experiment> experimentList = experimentService.selectExceptExperimentByCourseId(courseId);
+        return Result.success(experimentList);
     }
 
     @ApiOperation("根据实验id，获取单个实验信息")
@@ -85,4 +94,15 @@ public class ExperimentController {
         else return Result.success("删除成功");
     }
 
+    @ApiOperation("根据课程id和实验id，添加课程中的实验")
+    @PostMapping("add_experimentincourse")
+    public Result<String> deleteExperimentInCourse(@RequestBody HashMap<String, Object> map) {
+        String courseId = (String) map.get("courseId");
+        ArrayList<String> experimentIdList = (ArrayList<String>) map.get("experimentIdList");
+        for (String experimentId: experimentIdList) {
+            int res = experimentService.insertExperimentInCourse(Long.valueOf(courseId), Long.valueOf(experimentId));
+            if (res == 0) return Result.fail(400, "插入失败");
+        }
+        return Result.success("插入成功");
+    }
 }

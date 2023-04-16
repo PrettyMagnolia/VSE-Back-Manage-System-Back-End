@@ -41,6 +41,25 @@ public class ExperimentServiceImpl implements ExperimentService {
     }
 
     @Override
+    public List<Experiment> selectExceptExperimentByCourseId(Long courseId) {
+        List<Experiment> allExperiments = experimentMapper.selectAllExperiments();
+        List<CourseExperiment> courseExperimentList = experimentMapper.selectExperimentsByCourseId(courseId);
+        ArrayList<Experiment> res = new ArrayList<>();
+        for (Experiment ex: allExperiments) {
+            Long experimentId = ex.getExperimentId();
+            boolean flag = true;
+            for (CourseExperiment cs: courseExperimentList) {
+                if (cs.getExperimentId() == experimentId) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) res.add(ex);
+        }
+        return res;
+    }
+
+    @Override
     public ExperimentContentDto selectExperimentContentById(Long experimentId) {
         Experiment experiment = experimentMapper.selectExperimentById(experimentId);
         if (experiment == null) {
@@ -58,6 +77,11 @@ public class ExperimentServiceImpl implements ExperimentService {
         }
         ExperimentTemplateDto experimentTemplateDto = new ExperimentTemplateDto(experiment);
         return experimentTemplateDto;
+    }
+
+    @Override
+    public int insertExperimentInCourse(Long courseId, Long experimentId) {
+        return experimentMapper.insertExperimentInCourse(courseId, experimentId);
     }
 
     @Override
