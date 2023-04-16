@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Api(tags = {"Experiment"})
@@ -60,16 +61,12 @@ public class ExperimentController {
 
     @ApiOperation("根据课程id和实验id，修改课程中的实验")
     @PutMapping("modify_experimentincourse")
-    public Result<String> modifyExperimentInCourse(@ApiParam(name = "courseId", value = "课程id", required = true)
-                                                   @RequestParam("courseId") Long courseId,
-                                                   @ApiParam(name = "experimentId", value = "实验id", required = true)
-                                                   @RequestParam("experimentId") Long experimentId,
-                                                   @ApiParam(name = "startTime", value = "开始时间", required = true)
-                                                   @RequestParam("startTime") String startTime,
-                                                   @ApiParam(name = "endTime", value = "结束时间", required = true)
-                                                   @RequestParam("endTime") String endTime,
-                                                   @ApiParam(name = "score", value = "分数", required = true)
-                                                   @RequestParam("score") float score) throws ParseException {
+    public Result<String> modifyExperimentInCourse(@RequestBody HashMap<String, String> map) throws ParseException {
+        Long courseId = Long.valueOf(map.get("courseId"));
+        Long experimentId = Long.valueOf(map.get("experimentId"));
+        String startTime = map.get("startTime");
+        String endTime = map.get("endTime");
+        float score = Float.parseFloat(map.get("score"));
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         CourseExperiment courseExperiment = new CourseExperiment(courseId, experimentId, ft.parse(startTime), ft.parse(endTime), score);
         int res = experimentService.modifyExperimentInCourse(courseExperiment);
