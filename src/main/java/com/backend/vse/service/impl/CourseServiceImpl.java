@@ -1,5 +1,6 @@
 package com.backend.vse.service.impl;
 
+import com.backend.vse.dto.CourseBasicInfoDto;
 import com.backend.vse.entity.Course;
 import com.backend.vse.entity.StudentAttendCourse;
 import com.backend.vse.entity.TeacherTeachCourse;
@@ -11,6 +12,9 @@ import com.backend.vse.mapper.UserMapper;
 import com.backend.vse.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -50,5 +54,14 @@ public class CourseServiceImpl implements CourseService {
             return 0;
         }
         return studentAttendCourseMapper.insert(studentAttendCourse.getIndex(),studentAttendCourse.getCourseId());
+    }
+
+    @Override
+    public List<CourseBasicInfoDto> getCoursesByTeacher(Long index) {
+        List<Course> courseList = courseMapper.getCoursesBySemester(index);
+        List<CourseBasicInfoDto> courseBasicInfoDtoList = courseList.stream()
+                .map(course -> new CourseBasicInfoDto(course))
+                .collect(Collectors.toList());
+        return courseBasicInfoDtoList;
     }
 }

@@ -7,26 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class StudentScoreDto implements Comparable {
+public class SingleExperimentScoreDto {
     @JsonSerialize(using= ToStringSerializer.class)
-    Long index;
-    @JsonSerialize(using= ToStringSerializer.class)
-    Long studentId;
-    String studentName;
-    float totalScore;
-
-    List<SingleExperimentScoreDto> scoreList;
-
-
-    @Override
-    public int compareTo(Object o) {
-        StudentScoreDto stu = (StudentScoreDto) o;
-        return (int)(index - stu.getIndex());
-    }
+    Long experimentId;
+    String experimentName;
+    int score;
+    int maxScore;
 }
