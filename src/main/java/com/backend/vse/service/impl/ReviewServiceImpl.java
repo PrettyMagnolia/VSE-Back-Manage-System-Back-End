@@ -88,5 +88,10 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewMapper.getStudentList(courseId);
     }
 
+    @Override
+    public ArrayList<String> getSchoolNameList(String key) {
+        return reviewMapper.searchSchoolNameList(key);
+    }
+
 
 }

@@ -27,4 +27,6 @@ public interface ReviewService {
     Course getCourseInfo(Long courseId);
 
     ArrayList<Account> getStudentList(Long courseId);
+
+    ArrayList<String> getSchoolNameList(String key);
 }

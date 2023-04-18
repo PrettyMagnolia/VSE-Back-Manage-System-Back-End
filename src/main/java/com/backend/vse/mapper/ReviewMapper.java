@@ -51,4 +51,7 @@ public interface ReviewMapper extends BaseMapper<ExperimentReview> {
             "FROM user, student_attend_course s " +
             "WHERE user.`index` = s.`index` AND s.course_id = #{courseId};")
     ArrayList<Account> getStudentList(@Param("courseId") Long courseId);
+
+    @Select("SELECT name FROM vse.t_all_school WHERE LOCATE(#{key}, name) > 0")
+    ArrayList<String> searchSchoolNameList(@Param("key") String key);
 }

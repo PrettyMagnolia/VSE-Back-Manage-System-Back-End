@@ -128,4 +128,11 @@ public class ReviewController {
         }
         return Result.success(res);
     }
+
+    @ApiOperation("模糊搜索学校名称")
+    @GetMapping("school-name")
+    public Result<ArrayList<String>> getSchoolNameList(@RequestParam("key") String key) {
+        ArrayList<String> res = reviewService.getSchoolNameList(key);
+        return Result.success(res);
+    }
 }
