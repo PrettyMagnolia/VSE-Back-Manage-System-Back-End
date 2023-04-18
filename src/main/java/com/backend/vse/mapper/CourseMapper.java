@@ -12,8 +12,9 @@ import java.util.List;
 
 @Mapper
 public interface CourseMapper extends BaseMapper<Course> {
-
     @Select("SELECT c.* FROM course c, teacher_teach_course tt WHERE c.course_id=tt.course_id AND tt.index='${teacher_id}'")
     List<Course> getTeachingCourseList(@Param("teacher_id") long teacherId);
+    @Select("SELECT * FROM course JOIN teacher_teach_course WHERE `index`=#{index}")
+    List<Course> getCoursesBySemester(@Param("index") Long index);
 }
 
