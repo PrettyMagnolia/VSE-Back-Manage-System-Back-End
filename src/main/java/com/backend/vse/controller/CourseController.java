@@ -63,10 +63,7 @@ public class CourseController {
                 int res = userMapper.insertUser(0L,id,item.getName(),"111111",0,
                         item.getGender(),item.getEmail(),school, (byte) 0, (byte) 1,
                         "https://pic1.zhimg.com/v2-c0649aa7bd799ee4beefa8098ca7cf16_r.jpg?source=1940ef5c");
-                System.out.println("5555555555555555");
-                System.out.println(res);
                 stu = userMapper.selectByStuIdAndSchool(id, school);
-                System.out.println(stu.toString());
             }
 
 
