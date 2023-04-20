@@ -36,3 +36,7 @@ aliyun:
     accessKeyId: LTAI5tATBtZizUEmV6A64EAM
     accessKeySecret: drBE1YKrafkP0jKpGeLxPI4ZrRpfMY
     bucketName: virtual-experiment-system
+
+logging:
+  level:
+    com.baomidou.mybatisplus.core.MybatisPlusInterceptor: debug

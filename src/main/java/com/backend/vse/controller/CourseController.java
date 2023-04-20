@@ -3,12 +3,14 @@ package com.backend.vse.controller;
 import com.backend.vse.common.Result;
 import com.backend.vse.dto.CourseBasicInfoDto;
 import com.backend.vse.dto.ExperimentDto;
+import com.backend.vse.dto.ImportedStudentDto;
 import com.backend.vse.dto.NewCourseDto;
 import com.backend.vse.entity.Course;
 import com.backend.vse.entity.StudentAttendCourse;
 import com.backend.vse.entity.TeacherTeachCourse;
 import com.backend.vse.entity.User;
 import com.backend.vse.mapper.StudentAttendCourseMapper;
+import com.backend.vse.mapper.UserMapper;
 import com.backend.vse.service.CourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +31,8 @@ import java.util.stream.Collectors;
 public class CourseController {
     @Autowired
     CourseService courseService;
+    @Autowired
+    UserMapper userMapper;
 
     @ApiOperation("新增一门课程")
     @PostMapping("addcourse")
@@ -36,7 +40,7 @@ public class CourseController {
     {
         String courseName = newCourseDto.getCourseName();
         String semester = newCourseDto.getSemester();;
-        List<Long> studentList = newCourseDto.getStudentList();
+        List<ImportedStudentDto> studentList = newCourseDto.getStudentList();
         List<Long> teacherList = newCourseDto.getTeacherList();
         int year = newCourseDto.getYear();
         //涉及到多个CRUD，注意事务回滚！
@@ -49,15 +53,41 @@ public class CourseController {
         //拿到插入课程后，新生成的课程ID
         Long courseId = course.getCourseId();
 
-        //2.再插入学生与教师参与课程的表
+        //2.补足学生用户表
+        studentList.forEach(item -> {
+            Long id = item.getId();
+            String school = item.getSchool();
+            User stu = userMapper.selectByStuIdAndSchool(id, school);
+            //如果没有这个学生，就现加这个学生
+            if(stu == null){
+                int res = userMapper.insertUser(0L,id,item.getName(),"111111",0,
+                        item.getGender(),item.getEmail(),school, (byte) 0, (byte) 1,
+                        "https://pic1.zhimg.com/v2-c0649aa7bd799ee4beefa8098ca7cf16_r.jpg?source=1940ef5c");
+                System.out.println("5555555555555555");
+                System.out.println(res);
+                stu = userMapper.selectByStuIdAndSchool(id, school);
+                System.out.println(stu.toString());
+            }
+
+
+
+        });
+
         try {
+            //3.插入教师参与课程的表
             teacherList.forEach(index -> {
                 if (courseService.insertOneTeach(new TeacherTeachCourse(index, courseId)) <= 0) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     throw new DatabaseException("插入失败！");
                 }
             });
-            studentList.forEach(index -> {
+            //4.插入学生参与课程的表
+            studentList.forEach(item -> {
+                //先查出index
+                User stu = userMapper.selectByStuIdAndSchool(item.getId(), item.getSchool());
+                Long index = stu.getIndex();
+
+                //然后执行Insert
                 if (courseService.insertOneAttend(new StudentAttendCourse(index, courseId)) <= 0) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     throw new DatabaseException("插入失败！");

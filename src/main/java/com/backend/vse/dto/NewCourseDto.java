@@ -13,6 +13,6 @@ public class NewCourseDto {
     String courseName;
     String semester;
     List<Long> teacherList;
-    List<Long> studentList;
+    List<ImportedStudentDto> studentList;
     int year;
 }
