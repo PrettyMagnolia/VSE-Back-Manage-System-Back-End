@@ -34,7 +34,7 @@ public class ExperimentServiceImpl implements ExperimentService {
         }
         for (CourseExperiment cs : courseExperimentList) {
             Experiment experiment = experimentMapper.selectExperimentById(cs.getExperimentId());
-            ExperimentDto experimentDto = new ExperimentDto(experiment.getExperimentId(), experiment.getExperimentName(), experiment.getInstructor(), experiment.getTemplate(), cs.getScore(), cs.getStartTime(), cs.getEndTime());
+            ExperimentDto experimentDto = new ExperimentDto(experiment.getExperimentId(), experiment.getExperimentName(), cs.getInstructor(), cs.getTemplate(), cs.getScore(), cs.getStartTime(), cs.getEndTime());
             res.add(experimentDto);
         }
         return res;

@@ -77,7 +77,7 @@ public class ExperimentController {
         String endTime = map.get("endTime");
         float score = Float.parseFloat(map.get("score"));
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        CourseExperiment courseExperiment = new CourseExperiment(courseId, experimentId, ft.parse(startTime), ft.parse(endTime), score);
+        CourseExperiment courseExperiment = new CourseExperiment(courseId, experimentId, ft.parse(startTime), ft.parse(endTime), score, null, null);
         int res = experimentService.modifyExperimentInCourse(courseExperiment);
         if (res == 0) return Result.fail(400, "修改失败");
         else return Result.success("修改成功");

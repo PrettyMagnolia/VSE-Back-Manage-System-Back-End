@@ -26,4 +26,6 @@ public class CourseExperiment {
     Date startTime;
     Date endTime;
     float score;
+    String instructor;
+    String template;
 }
