@@ -1,12 +1,16 @@
 package com.backend.vse.controller;
 
 import com.backend.vse.common.Result;
+import com.backend.vse.dto.CourseBasicInfoDto;
 import com.backend.vse.dto.ExperimentDto;
+import com.backend.vse.dto.ImportedStudentDto;
+import com.backend.vse.dto.NewCourseDto;
 import com.backend.vse.entity.Course;
 import com.backend.vse.entity.StudentAttendCourse;
 import com.backend.vse.entity.TeacherTeachCourse;
 import com.backend.vse.entity.User;
 import com.backend.vse.mapper.StudentAttendCourseMapper;
+import com.backend.vse.mapper.UserMapper;
 import com.backend.vse.service.CourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,9 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Api(tags = {"Course"})
 @RestController
@@ -28,20 +31,18 @@ import java.util.Map;
 public class CourseController {
     @Autowired
     CourseService courseService;
+    @Autowired
+    UserMapper userMapper;
 
     @ApiOperation("新增一门课程")
     @PostMapping("addcourse")
-    public Result<String> postOneCourse(@ApiParam(name="courseName", value="课程名", required = true)
-                                @RequestParam("courseName") String courseName,
-                              @ApiParam(name="semester", value="开课学期，可填spring或fall", required = true)
-                                @RequestParam("semester") String semester,
-                              @ApiParam(name="year", value="开课年份", required = true)
-                                @RequestParam("year") int year,
-                              @ApiParam(name="teacherList", value="授课教师列表，每一项包含index", required = true)
-                                @RequestParam("teacherList") List<Long> teacherList,
-                              @ApiParam(name="studentList", value="学生列表，每一项为index", required = true)
-                                @RequestParam("studentList") List<Long> studentList)
+    public Result<String> postOneCourse(@RequestBody NewCourseDto newCourseDto)
     {
+        String courseName = newCourseDto.getCourseName();
+        String semester = newCourseDto.getSemester();;
+        List<ImportedStudentDto> studentList = newCourseDto.getStudentList();
+        List<Long> teacherList = newCourseDto.getTeacherList();
+        int year = newCourseDto.getYear();
         //涉及到多个CRUD，注意事务回滚！
         //1.先插入课程表
         Course course = new Course(courseName, semester, year);
@@ -52,15 +53,38 @@ public class CourseController {
         //拿到插入课程后，新生成的课程ID
         Long courseId = course.getCourseId();
 
-        //2.再插入学生与教师参与课程的表
+        //2.补足学生用户表
+        studentList.forEach(item -> {
+            Long id = item.getId();
+            String school = item.getSchool();
+            User stu = userMapper.selectByStuIdAndSchool(id, school);
+            //如果没有这个学生，就现加这个学生
+            if(stu == null){
+                int res = userMapper.insertUser(0L,id,item.getName(),"111111",0,
+                        item.getGender(),item.getEmail(),school, (byte) 0, (byte) 1,
+                        "https://pic1.zhimg.com/v2-c0649aa7bd799ee4beefa8098ca7cf16_r.jpg?source=1940ef5c");
+                stu = userMapper.selectByStuIdAndSchool(id, school);
+            }
+
+
+
+        });
+
         try {
+            //3.插入教师参与课程的表
             teacherList.forEach(index -> {
                 if (courseService.insertOneTeach(new TeacherTeachCourse(index, courseId)) <= 0) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     throw new DatabaseException("插入失败！");
                 }
             });
-            studentList.forEach(index -> {
+            //4.插入学生参与课程的表
+            studentList.forEach(item -> {
+                //先查出index
+                User stu = userMapper.selectByStuIdAndSchool(item.getId(), item.getSchool());
+                Long index = stu.getIndex();
+
+                //然后执行Insert
                 if (courseService.insertOneAttend(new StudentAttendCourse(index, courseId)) <= 0) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     throw new DatabaseException("插入失败！");
@@ -72,5 +96,19 @@ public class CourseController {
         }
 
         return Result.success("新增课程成功！");
+    }
+
+    @ApiOperation("获取一名教师的所有课程")
+    @GetMapping("courses")
+    public Result<List<CourseBasicInfoDto>> postOneCourse(@ApiParam(name="index", value="教师index", required = true)
+                                        @RequestParam("index") Long index)
+    {
+        List<CourseBasicInfoDto> courseBasicInfoDtoList = courseService.getCoursesByTeacher(index);
+        //按时间降序输出，dto类已实现Comparable接口
+        List<CourseBasicInfoDto> reverseList = courseBasicInfoDtoList.stream()
+                .sorted(Collections.reverseOrder())
+                .collect(Collectors.toList());
+
+        return Result.success(reverseList);
     }
 }

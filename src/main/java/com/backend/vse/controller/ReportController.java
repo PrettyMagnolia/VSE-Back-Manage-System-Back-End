@@ -4,16 +4,25 @@ import com.backend.vse.common.Result;
 import com.backend.vse.dto.ExperimentSubmitDto;
 import com.backend.vse.entity.ExperimentReview;
 import com.backend.vse.entity.ExperimentSubmit;
+import com.backend.vse.interceptor.JwtInterceptor;
+import com.backend.vse.service.OssService;
 import com.backend.vse.service.ReportService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import net.sf.jsqlparser.util.validation.metadata.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 @Api(tags = {"Report"})
 @RestController
@@ -21,6 +30,65 @@ import java.util.List;
 public class ReportController {
     @Autowired
     ReportService reportService;
+
+    @Autowired
+    OssService ossService;
+
+
+    @ApiOperation("学生提交一份报告")
+    @PostMapping(value = "submit", consumes = {MediaType.ALL_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public Result<ExperimentSubmit> studentSubmitReport(
+            @RequestPart("course_id") String cId,
+            @RequestPart("experiment_id") String eId,
+            @RequestPart("submit_time") String sTime,
+            @RequestPart(value = "report") MultipartFile report,
+            HttpServletRequest request
+    ) {
+        long courseId, experimentId;
+        Timestamp submitTime = null;
+        try {
+            courseId = Long.parseUnsignedLong(cId);
+            experimentId = Long.parseUnsignedLong(eId);
+            submitTime = Timestamp.valueOf(sTime);
+        } catch (Exception e) {
+            return Result.fail(400, "参数解析错误");
+        }
+
+        String reportUrl = ossService.uploadFile(report);
+        if (reportUrl == null) {
+            return Result.fail(400, "文件存储系统异常");
+        }
+
+
+        Long userId = JwtInterceptor.getLoginUser();
+        if (userId == null) {
+            try {
+                String student_id = String.valueOf(request.getParameter("student_id"));
+                userId = Long.parseUnsignedLong(student_id);
+            } catch (Exception e) {
+                return Result.fail(400, "缺失用户ID");
+            }
+        }
+
+        ExperimentSubmit submit = new ExperimentSubmit();
+        submit.setIndex(userId);
+        submit.setCourseId(courseId);
+        submit.setExperimentId(experimentId);
+        submit.setContent(reportUrl);
+        submit.setTime(submitTime);
+
+        try {
+            ExperimentSubmit result = reportService.submitReport(submit);
+            if (result == null) {
+                return Result.fail(2000, "不在可提交时间");
+            } else {
+                return Result.success(result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(400, "提交失败");
+        }
+    }
 
 //    @ApiOperation("学生提交一份报告")
 //    @PostMapping("studentSubmit")
@@ -74,13 +142,11 @@ public class ReportController {
 //    }
 
     @ApiOperation("根据提交者序号和实验ID，获取该学生提交的实验报告信息")
-    @GetMapping ("getStudentSubmit")
-    public Result<ExperimentSubmitDto> teacherReview(@ApiParam(name="index", value="提交者序号", required = true)
-                                @RequestParam("index") Long index,
-                                                     @ApiParam(name="reportId", value="实验报告ID", required = true)
-                                @RequestParam("reportId") Long reportId)
-
-    {
+    @GetMapping("getStudentSubmit")
+    public Result<ExperimentSubmitDto> teacherReview(@ApiParam(name = "index", value = "提交者序号", required = true)
+                                                     @RequestParam("index") Long index,
+                                                     @ApiParam(name = "reportId", value = "实验报告ID", required = true)
+                                                     @RequestParam("reportId") Long reportId) {
         ExperimentSubmitDto experimentSubmitDto = reportService.selectByIndexAndExperimentId(index, reportId);
         return Result.success(experimentSubmitDto);
     }

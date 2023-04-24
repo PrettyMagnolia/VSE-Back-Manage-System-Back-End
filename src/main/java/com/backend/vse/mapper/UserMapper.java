@@ -21,6 +21,17 @@ import org.apache.ibatis.annotations.Update;
 public interface UserMapper extends BaseMapper<User> {
     @Select("SELECT * FROM user WHERE email = '${email}' AND school='${school}' AND password='${password}'")
     User selectByIDAndSchool(@Param("email") String email, @Param("school") String school, @Param("password") String password);
+
+    @Select("SELECT * FROM user WHERE id=#{id} AND school=#{school}")
+    User selectByStuIdAndSchool(@Param("id") Long id, @Param("school") String school);
+
+    @Insert("INSERT INTO user(`index`,id,name,password,age,gender,email,school,role,status,avatar) VALUES " +
+            "(#{index},#{id},#{name},#{password},#{age},#{gender},#{email},#{school},#{role},#{status},#{avatar})")
+    int insertUser(@Param("index") Long index,@Param("id") Long id,@Param("name") String name,
+                   @Param("password") String password,@Param("age") int age,@Param("gender") String gender,
+                   @Param("email") String email,@Param("school")String school,
+    @Param("role") Byte role,@Param("status") Byte status,@Param("avatar") String avatar);
+
     @Select("SELECT * FROM user WHERE `index`=${index}")
     User selectByIndex(@Param("index") Long index);
 
@@ -44,6 +55,9 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Update("UPDATE user SET status='${status}' WHERE email='${email}'")
     Integer updateStatus(@Param("email") String email,@Param("status") Byte status);
+
+    @Update("UPDATE user SET avatar = '${avatar}' WHERE `index`=#{id}")
+    void updateUserAvatar(@Param("avatar") String avatar,@Param("id") Long id);
 
 
 

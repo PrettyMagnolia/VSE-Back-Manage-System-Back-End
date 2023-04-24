@@ -1,6 +1,5 @@
 package com.backend.vse.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -10,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
+
 /**
  * @author 赵帅涛
  * @date 2023/04/14
@@ -17,18 +17,22 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("course_experiment")
-public class CourseExperiment {
+public class ExperimentReport {
     @JsonSerialize(using = ToStringSerializer.class)
-    Long courseId;
+    Long reportId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    Long stuId;
     @JsonSerialize(using = ToStringSerializer.class)
     Long experimentId;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    Timestamp startTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    Timestamp endTime;
     @JsonSerialize(using = ToStringSerializer.class)
-    Integer score;
+    Long courseId;
+    String reportUrl;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    Timestamp submitTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    Timestamp reviewTime;
+    @JsonSerialize(using = ToStringSerializer.class)
+    Float score;
 }

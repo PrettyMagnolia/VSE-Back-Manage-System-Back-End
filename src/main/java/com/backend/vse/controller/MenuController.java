@@ -65,7 +65,7 @@ public class MenuController {
             result.remove(1);
 
             ArrayList<HashMap<String, Object>> children = menuService.getCourseMenuList(userId);
-            if (children.size() == 0) {
+            if (children == null || children.size() == 0) {
                 return Result.success(result);
             }
 
@@ -80,6 +80,21 @@ public class MenuController {
         } else {
             // 身份为助教等
         }
+        return Result.success(result);
+    }
+
+    @GetMapping("student")
+    public Result<JSONArray> getStudentMenuList() {
+        String json = null;
+        try {
+            ClassPathResource resource = new ClassPathResource("json/routes.json");
+            byte[] bytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
+            json = new String(bytes, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return Result.fail(5001, "文件读取失败");
+        }
+        JSONArray result = new JSONArray();
+        result = JSON.parseObject(json, JSONArray.class);
         return Result.success(result);
     }
 }

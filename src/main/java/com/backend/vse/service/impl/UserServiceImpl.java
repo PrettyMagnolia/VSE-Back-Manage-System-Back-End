@@ -40,6 +40,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateAvatar(String url, Long Id) {
+        userMapper.updateUserAvatar(url,Id);
+    }
+
+    @Override
     public StudentCourseInfoDto selectStudentCourseInfoByIndexAndCourseId(Long index, Long courseId) {
         StudentCourseInfoDto studentCourseInfoDto = userMapper.selectStudentCourseInfoByIndexAndCourseId(index,courseId);
         List<ExperimentScoreDto> experimentScoreDtoList = experimentMapper.selectExperimentScoreByIndexAndCourseId(index,courseId);

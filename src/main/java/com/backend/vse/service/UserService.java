@@ -21,4 +21,6 @@ public interface UserService {
     User findUserByIndex(Long index);
 
     Integer activateUserAccount(String email, String password, Byte status);
+
+    void updateAvatar(String url,Long Id);
 }

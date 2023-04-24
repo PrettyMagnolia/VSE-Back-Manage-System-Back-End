@@ -1,6 +1,5 @@
-package com.backend.vse.entity;
+package com.backend.vse.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -17,18 +16,20 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("course_experiment")
-public class CourseExperiment {
+public class StudentSubmitDto {
     @JsonSerialize(using = ToStringSerializer.class)
-    Long courseId;
+    Long reportId;
     @JsonSerialize(using = ToStringSerializer.class)
-    Long experimentId;
+    Long stuId;
+    String schoolNumber;
+    String stuName;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    Timestamp startTime;
+    Timestamp submitTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    Timestamp endTime;
+    Timestamp reviewTime;
+    String reportUrl;
     @JsonSerialize(using = ToStringSerializer.class)
-    Integer score;
+    Float score;
 }

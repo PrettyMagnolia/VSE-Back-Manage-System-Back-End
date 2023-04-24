@@ -7,8 +7,8 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
     # url: jdbc:mysql://101.42.17.125:3306/vse?useSSL=false
-#    url: jdbc:mysql://localhost:3306/vse?useSSL=false
-    url: jdbc:mysql://139.196.226.104:3306/vse?useSSL=false
+    # url: jdbc:mysql://localhost:3306/vse?useSSL=false
+    url: jdbc:mysql://139.196.226.104:3306/vse?useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
   mail:
@@ -20,8 +20,23 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
 
 
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+aliyun:
+  oss:
+    endpoint: oss-cn-shanghai.aliyuncs.com
+    accessKeyId: LTAI5tATBtZizUEmV6A64EAM
+    accessKeySecret: drBE1YKrafkP0jKpGeLxPI4ZrRpfMY
+    bucketName: virtual-experiment-system
+
+logging:
+  level:
+    com.baomidou.mybatisplus.core.MybatisPlusInterceptor: debug

@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
@@ -28,7 +29,7 @@ public class ExperimentSubmitDto {
     @JsonSerialize(using= ToStringSerializer.class)
     Long courseId;
     String content;
-    Date time;
+    Timestamp time;
 
     public ExperimentSubmitDto(ExperimentSubmit experimentSubmit){
         this.reportId = experimentSubmit.getReportId();

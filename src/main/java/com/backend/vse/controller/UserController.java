@@ -7,6 +7,7 @@ import com.backend.vse.entity.User;
 import com.backend.vse.common.Result;
 import com.backend.vse.interceptor.JwtInterceptor;
 import com.backend.vse.interceptor.util.JwtUtil;
+import com.backend.vse.service.OssService;
 import com.backend.vse.service.UserService;
 import com.backend.vse.tools.MailSender;
 import io.netty.util.Timeout;
@@ -17,6 +18,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,8 +55,7 @@ public class UserController {
             Map<String, String> hashMap = new HashMap<String, String>();
             hashMap.put("token", token);
             return Result.success(hashMap);
-        }
-        else { // 用户账户未激活，激活流程
+        } else { // 用户账户未激活，激活流程
             // 发送邮箱验证码 返回值为验证码
             StringBuilder code = MailSender.sendEmail(user.getEmail());
 
@@ -63,12 +64,11 @@ public class UserController {
             String msg;
             if (operations.get(user.getEmail()) != null) {
                 msg = "验证码已发送，请三分钟后重试";
-            }
-            else {
+            } else {
                 // 验证码存入redis
                 operations.set(user.getEmail(), String.valueOf(code));
                 // 设置过期时间为3分钟
-                redisTemplate.expire(user.getEmail(),3, TimeUnit.MINUTES);
+                redisTemplate.expire(user.getEmail(), 3, TimeUnit.MINUTES);
                 msg = "账户需要激活，验证码已发送";
             }
             return Result.fail(400, msg);
@@ -99,17 +99,38 @@ public class UserController {
         String email = map.get("username");
         // 验证验证码是否正确
 
-        ValueOperations<String,String> operations=redisTemplate.opsForValue();
+        ValueOperations<String, String> operations = redisTemplate.opsForValue();
         if (Objects.equals(code, operations.get(email))) { // 验证码填写正确
             // 更新用户的密码 和 账户状态
             Integer result = userService.activateUserAccount(email, password, (byte) 1);
-            if (result == 0) return Result.fail(400,"激活失败");
+            if (result == 0) return Result.fail(400, "激活失败");
             else return Result.success("账户激活成功");
-        }
-        else {
+        } else {
             return Result.fail(400, "验证码输入错误");
         }
     }
 
 
+    @Autowired
+    private OssService ossService;
+
+    @ApiOperation("修改头像")
+    @PostMapping("user/change-avatar")
+    public Result<Map<String, Object>> changeAvatar(@RequestPart("file") MultipartFile avatar) {
+        String url;
+        Long userId = JwtInterceptor.getLoginUser();
+        if(userId==null){
+            userId=199L;
+        }
+        try {
+            url = ossService.uploadFile(avatar);
+            userService.updateAvatar(url,userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(400, "上传错误");
+        }
+        Map<String, Object> res = new HashMap<>();
+        res.put("fileUrl", url);
+        return Result.success(res);
+    }
 }

@@ -1,38 +1,38 @@
-package com.backend.vse.entity;
+package com.backend.vse.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.GenerationType;
-//import javax.persistence.Id;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "experiment_submit")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ExperimentSubmit {
+public class NoticeDto {
     @JsonSerialize(using= ToStringSerializer.class)
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @TableId(type = IdType.AUTO)
-    Long reportId;
-    @JsonSerialize(using= ToStringSerializer.class)
-    Long index;
-    @JsonSerialize(using= ToStringSerializer.class)
-    Long experimentId;
-    @JsonSerialize(using= ToStringSerializer.class)
-    Long courseId;
+    Long noticeId;
+
+    String title;
+
     String content;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     Timestamp time;
+
+    public NoticeDto(String title, String content, Timestamp time){
+        this.title = title;
+        this.content = content;
+        this.time=time;
+    }
 }
