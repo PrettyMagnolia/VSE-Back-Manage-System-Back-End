@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -73,11 +74,11 @@ public class ExperimentController {
     public Result<String> modifyExperimentInCourse(@RequestBody HashMap<String, String> map) throws ParseException {
         Long courseId = Long.valueOf(map.get("courseId"));
         Long experimentId = Long.valueOf(map.get("experimentId"));
-        String startTime = map.get("startTime");
-        String endTime = map.get("endTime");
-        float score = Float.parseFloat(map.get("score"));
+        Timestamp startTime = Timestamp.valueOf(map.get("startTime"));
+        Timestamp endTime = Timestamp.valueOf(map.get("endTime"));
+        Integer score = Integer.valueOf(map.get("score"));
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        CourseExperiment courseExperiment = new CourseExperiment(courseId, experimentId, ft.parse(startTime), ft.parse(endTime), score, null, null);
+        CourseExperiment courseExperiment = new CourseExperiment(courseId, experimentId, startTime, endTime, score, null, null);
         int res = experimentService.modifyExperimentInCourse(courseExperiment);
         if (res == 0) return Result.fail(400, "修改失败");
         else return Result.success("修改成功");
