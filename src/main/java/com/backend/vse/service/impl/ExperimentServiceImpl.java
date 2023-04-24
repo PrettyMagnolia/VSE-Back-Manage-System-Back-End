@@ -93,4 +93,14 @@ public class ExperimentServiceImpl implements ExperimentService {
     public int deleteExperimentInCourse(Long courseId, Long experimentId) {
         return experimentMapper.deleteExperimentInCourse(courseId, experimentId);
     }
+
+    @Override
+    public int updateExperimentInstructor(Long courseId, Long experimentId, String instructor) {
+        return experimentMapper.updateExperimentInstructor(courseId, experimentId, instructor);
+    }
+
+    @Override
+    public int updateExperimentTemplate(Long courseId, Long experimentId, String template) {
+        return experimentMapper.updateExperimentTemplate(courseId, experimentId, template);
+    }
 }

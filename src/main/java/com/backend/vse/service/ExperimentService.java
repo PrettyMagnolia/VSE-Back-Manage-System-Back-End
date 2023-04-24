@@ -22,4 +22,7 @@ public interface ExperimentService {
     int insertExperimentInCourse(Long courseId, Long experimentId);
     int modifyExperimentInCourse(CourseExperiment courseExperiment);
     int deleteExperimentInCourse(Long courseId, Long experimentId);
+
+    int updateExperimentInstructor(Long courseId, Long experimentId, String instructor);
+    int updateExperimentTemplate(Long courseId, Long experimentId, String template);
 }

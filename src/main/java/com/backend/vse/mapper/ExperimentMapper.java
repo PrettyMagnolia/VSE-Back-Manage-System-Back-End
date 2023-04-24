@@ -38,7 +38,7 @@ public interface ExperimentMapper extends BaseMapper<Experiment> {
     List<ExperimentScoreDto> selectExperimentScoreByIndexAndCourseId(@Param("index") Long index,
                                                                      @Param("courseId") Long courseId);
 
-    @Insert("INSERT INTO course_experiment (course_id, experiment_id, start_time, end_time, score) VALUES (${courseId}, ${experimentId}, null, null, null)")
+    @Insert("INSERT INTO course_experiment (course_id, experiment_id, start_time, end_time, score, instructor, template) VALUES (${courseId}, ${experimentId}, null, null, 0, null, null)")
     int insertExperimentInCourse(@Param("courseId") Long courseId, @Param("experimentId") Long experimentId);
 
     @Update("UPDATE course_experiment SET start_time=#{courseExperiment.startTime}, end_time=#{courseExperiment.endTime}, score=#{courseExperiment.score} WHERE course_id=#{courseExperiment.courseId} AND experiment_id=${courseExperiment.experimentId}")
@@ -46,4 +46,10 @@ public interface ExperimentMapper extends BaseMapper<Experiment> {
 
     @Delete("DELETE FROM course_experiment WHERE course_id=${courseId} AND experiment_id=${experimentId}")
     int deleteExperimentInCourse(@Param("courseId") Long courseId, @Param("experimentId") Long experimentId);
+
+    @Update("UPDATE course_experiment SET instructor='${instructor}' WHERE course_id=${courseId} AND experiment_id=${experimentId}")
+    int updateExperimentInstructor(@Param("courseId") Long courseId, @Param("experimentId") Long experimentId, @Param("instructor") String instructor);
+
+    @Update("UPDATE course_experiment SET template='${template}' WHERE course_id=${courseId} AND experiment_id=${experimentId}")
+    int updateExperimentTemplate(@Param("courseId") Long courseId, @Param("experimentId") Long experimentId, @Param("template") String template);
 }
