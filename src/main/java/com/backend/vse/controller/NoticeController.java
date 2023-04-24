@@ -87,4 +87,12 @@ public class NoticeController {
         ArrayList<NoticeDto> NoticeDto = noticeService.selectByCourseId(courseId);
         return Result.success(NoticeDto);
     }
+
+    @ApiOperation("根据公告ID，删除该公告")
+    @DeleteMapping("coursenotice")
+    public Result<String> DeleteCourseNotices(@ApiParam(name = "noticeId", value = "公告序号", required = true)
+            @RequestParam("deleteNoticeId") Long noticeId) {
+        String result = noticeService.deleteByNoticeId(noticeId);
+        return Result.success(result);
+    }
 }

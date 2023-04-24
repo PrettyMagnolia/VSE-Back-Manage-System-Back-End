@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @Mapper
 public interface NoticeMapper extends BaseMapper<Notice> {
-    @Select("SELECT * FROM notice WHERE `course_id`=#{courseId}")
+    @Select("SELECT * FROM notice WHERE course_id =#{courseId}")
     ArrayList<NoticeDto> selectByCourseId(@Param("courseId") Long courseId);
 
     @Insert("INSERT INTO notice(course_id, title, content, time)" +
@@ -32,4 +32,6 @@ public interface NoticeMapper extends BaseMapper<Notice> {
 
     @Select("SELECT LAST_INSERT_ID() from notice LIMIT 1")
     Long getLastNoticeId();
+    @Delete("DELETE FROM notice WHERE notice_id = #{noticeId}")
+    void deleteNotice(@Param("noticeId") Long noticeId);
 }
