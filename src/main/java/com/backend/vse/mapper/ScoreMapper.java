@@ -48,4 +48,9 @@ public interface ScoreMapper extends BaseMapper<Score> {
 
     @Select("SELECT experiment_id FROM course_experiment WHERE course_id=#{courseId}")
     List<Long> selectExperimentIdsByCourseId(@Param("courseId") Long courseId);
+
+    @Update("UPDATE score SET score=#{score} " +
+            "WHERE `index`=#{index} AND course_id=#{courseId}")
+    int updateScore(@Param("index") Long index,@Param("courseId") Long courseId, @Param("score") Float score);
+
 }

@@ -3,6 +3,7 @@ package com.backend.vse.service.impl;
 import com.backend.vse.dto.SingleExperimentScoreDto;
 import com.backend.vse.dto.StudentScoreDto;
 import com.backend.vse.entity.Experiment;
+import com.backend.vse.entity.Score;
 import com.backend.vse.mapper.ExperimentMapper;
 import com.backend.vse.mapper.ScoreMapper;
 import com.backend.vse.service.ScoreService;
@@ -33,8 +34,9 @@ public class ScoreServiceImpl implements ScoreService {
             maxScoreMap.put(experimentId, maxScore);
         }
 
-        //查询该学生该课程的所有实验的成绩
         for(StudentScoreDto item : studentScoreDtoList){
+            //查询该学生该课程的所有实验的成绩，然后更新总成绩
+            float totalScore = 0;
             Long index = item.getIndex();
 
             List<SingleExperimentScoreDto> singleExperimentScoreDtoList = scoreMapper.selectSingleExperimentScoreDto(index, courseId);
@@ -43,10 +45,17 @@ public class ScoreServiceImpl implements ScoreService {
                 Long experimentId = s.getExperimentId();
                 int maxScore = maxScoreMap!=null ? maxScoreMap.get(experimentId) : 0;
                 s.setMaxScore(maxScore);
+                totalScore += s.getScore();
             }
+            //用totalScore更新score表
+            int res = scoreMapper.updateScore(index, courseId, totalScore);
+            //用新算出来的totalScore作为总成绩
+            item.setTotalScore(totalScore);
 
             item.setScoreList(singleExperimentScoreDtoList);
         }
+
+
 
         return studentScoreDtoList;
     }
