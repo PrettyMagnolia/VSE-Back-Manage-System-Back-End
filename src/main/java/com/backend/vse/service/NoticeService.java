@@ -12,4 +12,6 @@ public interface NoticeService {
     ArrayList<NoticeDto> selectByCourseId(Long courseId);
 
     Notice addNotice(Notice notice);
+
+    String deleteByNoticeId(Long noticeId);
 }

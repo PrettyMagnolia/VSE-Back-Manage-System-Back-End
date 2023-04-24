@@ -31,4 +31,6 @@ public class CourseExperiment {
     Timestamp endTime;
     @JsonSerialize(using = ToStringSerializer.class)
     Integer score;
+    String instructor;
+    String template;
 }

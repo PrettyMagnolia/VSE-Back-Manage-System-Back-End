@@ -1,27 +1,23 @@
 package com.backend.vse.dto;
 
-import com.backend.vse.entity.Experiment;
-import com.backend.vse.service.ExperimentService;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
+/**
+ * @Author 2051196 刘一飞
+ * @Date 2023/4/15
+ * @JDKVersion 17.0.4
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ExperimentDto {
-    @JsonSerialize(using = ToStringSerializer.class)
+public class ExperimentBriefInfo {
+    @JsonSerialize(using= ToStringSerializer.class)
     Long experimentId;
     String experimentName;
     String instructor;
     String template;
-    float score;
-    Date startTime;
-    Date endTime;
 }

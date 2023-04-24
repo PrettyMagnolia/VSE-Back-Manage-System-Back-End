@@ -36,4 +36,17 @@ public class NoticeServiceImpl implements NoticeService {
         }
         return result;
     }
+
+    @Override
+    public String deleteByNoticeId(Long noticeId) {
+        String result=null;
+        if(noticeId!=0 && noticeMapper.selectByNoticeId(noticeId)!=null) {
+            noticeMapper.deleteNotice(noticeId);
+            result="Delete success";
+        }else {
+            result="Delete failed";
+        }
+
+        return result;
+    }
 }
