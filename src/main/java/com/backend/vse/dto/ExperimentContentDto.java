@@ -16,7 +16,7 @@ public class ExperimentContentDto {
 
     public ExperimentContentDto(Experiment experiment){
         this.title = experiment.getExperimentName();
-        this.content = experiment.getContent();
+        this.content = experiment.getTemplate();
         this.file = experiment.getInstructor();
     }
 }
