@@ -1,33 +1,24 @@
 package com.backend.vse.controller;
 
 import com.backend.vse.common.Result;
-import com.backend.vse.dto.ExperimentSubmitDto;
 import com.backend.vse.dto.NoticeDto;
-import com.backend.vse.entity.ExperimentReview;
-import com.backend.vse.entity.ExperimentSubmit;
 import com.backend.vse.entity.Notice;
-import com.backend.vse.interceptor.JwtInterceptor;
 import com.backend.vse.service.NoticeService;
 import com.backend.vse.service.OssService;
-import com.backend.vse.service.ReportService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import net.sf.jsqlparser.util.validation.metadata.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Array;
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 
 @Api(tags = {"coursenotice"})
@@ -43,34 +34,48 @@ public class NoticeController {
     @ApiOperation("添加一个课程公告")
     @PostMapping("coursenoticeadd")
     public Result<Notice> CourseNoticeAdd(
-            @RequestPart("noticeId") String nId,
-            @RequestPart("courseId") String cId,
-            @RequestPart("title") String title,
-            @RequestPart("time") Timestamp time,
-            @RequestPart(value = "content") MultipartFile content,
+//            @ApiParam(name = "noticeId", value = "公告序号", required = true)
+//            @RequestParam(name="noticeId", required = false, defaultValue = "0") Long nId,
+//            @ApiParam(name = "courseId", value = "课程序号", required = true)
+//            @RequestParam("courseId") String cId,
+//            @ApiParam(name = "noticeTitle", value = "公告标题", required = true)
+//            @RequestParam("noticeTitle") String noticeTitle,
+//            @ApiParam(name = "publishTime", value = "发布时间", required = true)
+//            @RequestParam("publishTime") Timestamp publishTime,
+//            @ApiParam(name = "content", value = "公告内容", required = true)
+//            @RequestParam(value = "content") String content,
+            @RequestBody Map<String, String> jsonload,
             HttpServletRequest request
     ) {
-        long courseId,noticeId=0;
+        long courseId,noticeId;
         try {
-            courseId = Long.parseUnsignedLong(cId);
-            if(nId!=null){
-                noticeId = Long.parseUnsignedLong(nId);
-            }
+            courseId = Long.parseUnsignedLong(jsonload.get("courseId"));
+            noticeId = Long.parseUnsignedLong(jsonload.get("noticeId"));
         } catch (Exception e) {
             return Result.fail(400, "参数解析错误");
         }
 
-        String contentUrl = ossService.uploadFile(content);
+
         Notice notice=new Notice();
-        if(nId!=null) {
+        if(noticeId!=0) {
             notice.setNoticeId(noticeId);
         }else{
             notice.setNoticeId(null);
         }
         notice.setCourseId(courseId);
-        notice.setTime(time);
-        notice.setContent(contentUrl);
-        notice.setTitle(title);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Date parsedDate = null;
+        try {
+            parsedDate = dateFormat.parse(jsonload.get("publishTime"));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        Timestamp timestamp = new Timestamp(parsedDate.getTime());
+        notice.setTime(timestamp);
+//        String contentUrl = ossService.uploadFile(content);
+//        notice.setContent(contentUrl);
+        notice.setContent(jsonload.get("content"));
+        notice.setTitle(jsonload.get("noticeTitle"));
         try {
             Notice result = noticeService.addNotice(notice);
             return Result.success(result);
