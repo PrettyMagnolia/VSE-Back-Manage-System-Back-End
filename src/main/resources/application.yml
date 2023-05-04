@@ -9,8 +9,8 @@ spring:
     # url: jdbc:mysql://101.42.17.125:3306/vse?useSSL=false
     # url: jdbc:mysql://localhost:3306/vse?useSSL=false
     url: jdbc:mysql://139.196.226.104:3306/vse?useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+    username: lyf
+    password: Lyf415926
   mail:
     host: smtp.qq.com #???????
     username: 417695971@qq.com #QQ??
