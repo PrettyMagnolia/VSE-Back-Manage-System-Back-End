@@ -1,5 +1,7 @@
 package com.backend.vse.service;
 
+import com.backend.vse.dto.StudentMenuDto;
+import com.backend.vse.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,4 +21,6 @@ public interface MenuService {
 
     //设置菜单项属性
     HashMap<String, Object> getMenuMeta(String icon, String title);
+
+    ArrayList<StudentMenuDto> buildMenuForStudent(User user);
 }

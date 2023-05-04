@@ -1,7 +1,12 @@
 package com.backend.vse.service.impl;
 
+import com.backend.vse.dto.StudentMenuDto;
 import com.backend.vse.entity.Course;
+import com.backend.vse.entity.Experiment;
+import com.backend.vse.entity.User;
 import com.backend.vse.mapper.CourseMapper;
+import com.backend.vse.mapper.ExperimentMapper;
+import com.backend.vse.mapper.StudentAttendCourseMapper;
 import com.backend.vse.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +25,12 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     private CourseMapper courseMapper;
 
+    @Autowired
+    private StudentAttendCourseMapper studentAttendCourseMapper;
+
+    @Autowired
+    private ExperimentMapper experimentMapper;
+
     // 获取菜单配置型
     @Override
     public HashMap<String, Object> getMenuMeta(String icon, String title) {
@@ -30,6 +41,23 @@ public class MenuServiceImpl implements MenuService {
         result.put("isHide", false);
         result.put("isFull", false);
         result.put("isKeepAlive", true);
+        return result;
+    }
+
+    @Override
+    public ArrayList<StudentMenuDto> buildMenuForStudent(User user) {
+        ArrayList<StudentMenuDto> result=new ArrayList<>();
+        ArrayList<Long> experiments= studentAttendCourseMapper.getExperimentByIndex(user.getIndex());
+        for (Long experimentId: experiments) {
+            Experiment experiment=experimentMapper.selectExperimentById(experimentId);
+            StudentMenuDto studentMenuDto=new StudentMenuDto();
+            studentMenuDto.setId(experiment.getExperimentId());
+            studentMenuDto.setName(experiment.getExperimentName());
+            studentMenuDto.setKind(experiment.getKind());
+            studentMenuDto.setFile(experiment.getInstructor());
+            studentMenuDto.setContent(null);
+            result.add(studentMenuDto);
+        }
         return result;
     }
 

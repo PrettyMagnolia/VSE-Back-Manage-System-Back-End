@@ -3,6 +3,8 @@ package com.backend.vse.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.backend.vse.common.Result;
+import com.backend.vse.dto.ExperimentDto;
+import com.backend.vse.dto.StudentMenuDto;
 import com.backend.vse.entity.User;
 import com.backend.vse.interceptor.JwtInterceptor;
 import com.backend.vse.service.MenuService;
@@ -84,17 +86,20 @@ public class MenuController {
     }
 
     @GetMapping("student")
-    public Result<JSONArray> getStudentMenuList() {
-        String json = null;
-        try {
-            ClassPathResource resource = new ClassPathResource("json/routes.json");
-            byte[] bytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
-            json = new String(bytes, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            return Result.fail(5001, "文件读取失败");
-        }
-        JSONArray result = new JSONArray();
-        result = JSON.parseObject(json, JSONArray.class);
-        return Result.success(result);
+    public Result<ArrayList<StudentMenuDto>> getStudentMenuList() {
+        Long index = JwtInterceptor.getLoginUser();
+        User user = userService.findUserByIndex(index);
+        ArrayList<StudentMenuDto> Menu=menuService.buildMenuForStudent(user);
+//        String json = null;
+//        try {
+//            ClassPathResource resource = new ClassPathResource("json/routes.json");
+//            byte[] bytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
+//            json = new String(bytes, StandardCharsets.UTF_8);
+//        } catch (IOException e) {
+//            return Result.fail(5001, "文件读取失败");
+//        }
+//        JSONArray result = new JSONArray();
+//        result = JSON.parseObject(json, JSONArray.class);
+        return Result.success(Menu);
     }
 }
