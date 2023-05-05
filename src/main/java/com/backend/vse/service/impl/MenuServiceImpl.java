@@ -2,6 +2,7 @@ package com.backend.vse.service.impl;
 
 import com.backend.vse.dto.StudentMenuDto;
 import com.backend.vse.entity.Course;
+import com.backend.vse.entity.CourseExperiment;
 import com.backend.vse.entity.Experiment;
 import com.backend.vse.entity.User;
 import com.backend.vse.mapper.CourseMapper;
@@ -47,15 +48,16 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public ArrayList<StudentMenuDto> buildMenuForStudent(User user) {
         ArrayList<StudentMenuDto> result=new ArrayList<>();
-        ArrayList<Long> experiments= studentAttendCourseMapper.getExperimentByIndex(user.getIndex());
-        for (Long experimentId: experiments) {
-            Experiment experiment=experimentMapper.selectExperimentById(experimentId);
+        ArrayList<CourseExperiment> course_experiments= studentAttendCourseMapper.getExperimentByIndex(user.getIndex());
+        for (CourseExperiment courseExperiment: course_experiments) {
+            Experiment experiment=experimentMapper.selectExperimentById(courseExperiment.getExperimentId());
             StudentMenuDto studentMenuDto=new StudentMenuDto();
             studentMenuDto.setId(experiment.getExperimentId());
-            studentMenuDto.setName(experiment.getExperimentName());
+            studentMenuDto.setTitle(experiment.getExperimentName());
+            studentMenuDto.setName(experiment.getName());
             studentMenuDto.setKind(experiment.getKind());
-            studentMenuDto.setFile(experiment.getInstructor());
             studentMenuDto.setContent(null);
+            studentMenuDto.setFile(courseExperiment.getInstructor());
             result.add(studentMenuDto);
         }
         return result;

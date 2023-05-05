@@ -2,6 +2,7 @@ package com.backend.vse.mapper;
 
 import com.backend.vse.dto.StudentInfoDto;
 import com.backend.vse.dto.StudentSimpleDto;
+import com.backend.vse.entity.CourseExperiment;
 import com.backend.vse.entity.StudentAttendCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Insert;
@@ -29,10 +30,10 @@ public interface StudentAttendCourseMapper extends BaseMapper<StudentAttendCours
             "LEFT JOIN vse.student_attend_course sac ON u.`index` = sac.`index` " +
             "WHERE sac.course_id != #{course_id} OR sac.course_id IS NULL;")
     ArrayList<StudentInfoDto> getCourseFreeStudents(long courseId);
-    @Select("SELECT DISTINCT course_experiment.experiment_id" +
+    @Select("SELECT *" +
             "FROM student_attend_course " +
             "INNER JOIN course_experiment " +
             "ON student_attend_course.course_id = course_experiment.course_id " +
             "WHERE student_attend_course.index = #{index};")
-    ArrayList<Long> getExperimentByIndex(long index);
+    ArrayList<CourseExperiment> getExperimentByIndex(long index);
 }

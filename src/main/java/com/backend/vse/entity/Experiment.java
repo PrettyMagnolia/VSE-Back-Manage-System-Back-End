@@ -25,6 +25,7 @@ public class Experiment {
     @JsonSerialize(using= ToStringSerializer.class)
     String experimentName;
     String kind;
+    String name;
     String instructor;
     String template;
 }
