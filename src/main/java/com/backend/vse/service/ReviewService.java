@@ -29,4 +29,6 @@ public interface ReviewService {
     ArrayList<Account> getStudentList(Long courseId);
 
     ArrayList<String> getSchoolNameList(String key);
+
+    Boolean changeUserBaseInfo(Account account,Long userId);
 }

@@ -54,4 +54,12 @@ public interface ReviewMapper extends BaseMapper<ExperimentReview> {
 
     @Select("SELECT name FROM vse.t_all_school WHERE LOCATE(#{key}, name) > 0")
     ArrayList<String> searchSchoolNameList(@Param("key") String key);
+
+    @Update("UPDATE vse.user " +
+            "SET name  = #{name}, " +
+            "    gender= #{gender}, " +
+            "    email= #{email}, " +
+            "    age= #{age} " +
+            "WHERE `index` = #{userId};")
+    Boolean changeUserAccount(@Param("name") String name,@Param("gender") String gender,@Param("email") String email,@Param("age") Integer age, @Param("userId") Long userId);
 }

@@ -135,4 +135,24 @@ public class ReviewController {
         ArrayList<String> res = reviewService.getSchoolNameList(key);
         return Result.success(res);
     }
+
+    @ApiOperation("修改用户信息")
+    @PutMapping("change-userinfo")
+    public Result<Boolean> changeUserBaseInfo(@RequestBody Account account) {
+        Long userId;
+        try {
+            userId = JwtInterceptor.getLoginUser();
+        } catch (Exception e) {
+            userId = 199L;
+        }
+        if(userId == null){
+            userId = 199L;
+        }
+        try {
+            Boolean res = reviewService.changeUserBaseInfo(account, userId);
+            return Result.success(res);
+        } catch (Exception e) {
+            return Result.fail(400, "数据库连接错误");
+        }
+    }
 }

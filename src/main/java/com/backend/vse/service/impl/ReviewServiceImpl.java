@@ -94,4 +94,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
 
+    public Boolean changeUserBaseInfo(Account account, Long userId) {
+        if (account == null) {
+            return false;
+        }
+        if (account.getName() == null || account.getGender() == null || account.getEmail() == null || account.getAge() == null) {
+            return false;
+        }
+        return reviewMapper.changeUserAccount(account.getName(), account.getGender(), account.getEmail(), account.getAge(), userId);
+    }
 }
