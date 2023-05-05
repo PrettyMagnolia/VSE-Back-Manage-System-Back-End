@@ -17,13 +17,28 @@ spring:
     password: drvvnzlqxbddcahd #??????
     protocol: smtp #??????
     default-encoding: utf-8
+  # redis配置
   redis:
-    host: 127.0.0.1
-    port: 6379
-  servlet:
-    multipart:
-      max-file-size: 100MB
-      max-request-size: 1000MB
+    # 地址
+    host: 139.196.226.104
+    # 端口，默认为6379
+    port: 8010
+    password: Lyf415926
+    database: 0
+    # 连接超时时间
+    timeout: 10s
+    jedis:
+      pool:
+        # 连接池中的最小空闲连接
+        min-idle: 0
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池的最大数据库连接数
+        max-active: 8
+        # #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1m
+        time-between-eviction-runs: 1000
+
 
 
 mybatis-plus:

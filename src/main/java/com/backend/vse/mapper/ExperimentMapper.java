@@ -5,7 +5,6 @@ import com.backend.vse.dto.ExperimentScoreDto;
 import com.backend.vse.entity.CourseExperiment;
 import com.backend.vse.entity.Experiment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.lettuce.core.output.ScoredValueListOutput;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
