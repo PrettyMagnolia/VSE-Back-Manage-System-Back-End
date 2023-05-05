@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StudentMenuDto {
     @JsonSerialize(using= ToStringSerializer.class)
-    int id;
+    Long id;
     String title;
     String name;
     String kind;
