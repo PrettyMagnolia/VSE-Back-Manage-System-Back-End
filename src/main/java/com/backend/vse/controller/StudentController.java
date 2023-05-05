@@ -12,7 +12,9 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Map;
 
 @Api(tags = {"courseStudent"})
 @RestController
@@ -52,26 +54,29 @@ public class StudentController {
     @ApiOperation("根据学生信息添加学生（非新增用户）")
     @PostMapping("coursestudentadd")
     public Result<String> CourseStudentadd(
-            @ApiParam(name = "courseId", value = "课程序号", required = true)
-            @RequestParam("courseId") String cId,
-            @ApiParam(name = "stuId", value = "学号", required = true)
-            @RequestParam("stuId") String sId,
-            @ApiParam(name = "school", value = "学校", required = true)
-            @RequestParam("school") String school,
-            @ApiParam(name = "name", value = "姓名", required = true)
-            @RequestParam("name") String name)
+//            @ApiParam(name = "courseId", value = "课程序号", required = true)
+//            @RequestParam("courseId") String cId,
+//            @ApiParam(name = "stuId", value = "学号", required = true)
+//            @RequestParam("stuId") String sId,
+//            @ApiParam(name = "school", value = "学校", required = true)
+//            @RequestParam("school") String school,
+//            @ApiParam(name = "name", value = "姓名", required = true)
+//            @RequestParam("name") String name),
+            @RequestBody Map<String, String> jsonload,
+            HttpServletRequest request
+    )
     {
         long courseId;
         try {
-            courseId = Long.parseUnsignedLong(cId);
+            courseId = Long.parseUnsignedLong(jsonload.get("courseId"));
         } catch (Exception e) {
             return Result.fail(400, "参数解析错误");
         }
         StudentAttendCourseDto existStudent=new StudentAttendCourseDto();
         existStudent.setCourseId(courseId);
-        existStudent.setStuId(sId);
-        existStudent.setName(name);
-        existStudent.setSchool(school);
+        existStudent.setStuId(jsonload.get("stuId"));
+        existStudent.setName(jsonload.get("name"));
+        existStudent.setSchool(jsonload.get("school"));
         String result = studentService.addExistStudent(existStudent);
         return Result.success(result);
     }

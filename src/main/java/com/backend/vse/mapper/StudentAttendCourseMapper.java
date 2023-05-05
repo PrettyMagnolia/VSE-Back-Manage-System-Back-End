@@ -27,8 +27,12 @@ public interface StudentAttendCourseMapper extends BaseMapper<StudentAttendCours
 
     @Select("SELECT u.id stuId, u.name name, u.school , u.gender , u.email " +
             "FROM vse.user u " +
-            "LEFT JOIN vse.student_attend_course sac ON u.`index` = sac.`index` " +
-            "WHERE sac.course_id != #{course_id} OR sac.course_id IS NULL;")
+            "WHERE NOT EXISTS ( " +
+            "  SELECT * " +
+            "  FROM vse.student_attend_course " +
+            "  WHERE u.index = vse.student_attend_course.index " +
+            "  AND course_id = #{courseId} " +
+            ");")
     ArrayList<StudentInfoDto> getCourseFreeStudents(long courseId);
     @Select("SELECT *" +
             "FROM student_attend_course " +

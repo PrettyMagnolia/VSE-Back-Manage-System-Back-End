@@ -9,7 +9,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -63,7 +65,7 @@ public class NoticeController {
             notice.setNoticeId(null);
         }
         notice.setCourseId(courseId);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date parsedDate = null;
         try {
             parsedDate = dateFormat.parse(jsonload.get("publishTime"));
@@ -72,7 +74,8 @@ public class NoticeController {
         }
         Timestamp timestamp = new Timestamp(parsedDate.getTime());
         notice.setTime(timestamp);
-//        String contentUrl = ossService.uploadFile(content);
+//        MultipartFile file = new MockMultipartFile("file.txt", jsonload.get("content").getBytes());
+//        String contentUrl = ossService.uploadFile(file);
 //        notice.setContent(contentUrl);
         notice.setContent(jsonload.get("content"));
         notice.setTitle(jsonload.get("noticeTitle"));
@@ -96,7 +99,7 @@ public class NoticeController {
     @ApiOperation("根据公告ID，删除该公告")
     @DeleteMapping("coursenotice")
     public Result<String> DeleteCourseNotices(@ApiParam(name = "noticeId", value = "公告序号", required = true)
-            @RequestParam("deleteNoticeId") Long noticeId) {
+            @RequestParam("noticeId") Long noticeId) {
         String result = noticeService.deleteByNoticeId(noticeId);
         return Result.success(result);
     }
