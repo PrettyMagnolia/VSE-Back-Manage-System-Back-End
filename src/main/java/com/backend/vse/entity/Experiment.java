@@ -23,12 +23,8 @@ public class Experiment {
     @TableId(type = IdType.AUTO)
     Long experimentId;
     @JsonSerialize(using= ToStringSerializer.class)
-    Long courseId;
-    float weight;
-    Date startTime;
-    Date endTime;
     String experimentName;
-    String content;
+    String kind;
     String instructor;
     String template;
 }

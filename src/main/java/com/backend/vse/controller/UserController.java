@@ -10,7 +10,6 @@ import com.backend.vse.interceptor.util.JwtUtil;
 import com.backend.vse.service.OssService;
 import com.backend.vse.service.UserService;
 import com.backend.vse.tools.MailSender;
-import io.netty.util.Timeout;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
