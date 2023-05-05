@@ -85,7 +85,7 @@ public class MenuController {
         return Result.success(result);
     }
 
-    @GetMapping("studentExperiment")
+    @GetMapping("student_experiment")
     public Result<ArrayList<StudentMenuDto>> getStudentMenuList() {
         Long index = JwtInterceptor.getLoginUser();
         User user = userService.findUserByIndex(index);
