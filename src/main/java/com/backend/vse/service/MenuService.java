@@ -23,4 +23,6 @@ public interface MenuService {
     HashMap<String, Object> getMenuMeta(String icon, String title);
 
     ArrayList<StudentMenuDto> buildMenuForStudent(User user);
+
+    ArrayList<StudentMenuDto> buildWholeMenu();
 }

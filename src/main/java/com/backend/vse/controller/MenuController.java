@@ -86,13 +86,14 @@ public class MenuController {
         return Result.success(result);
     }
 
-    @ApiOperation("使用token获取实验列表，没有token则返回默认1号用户的列表")
+    @ApiOperation("使用token获取实验列表，没有token则返回全部列表")
     @GetMapping("student_experiment")
     public Result<ArrayList<StudentMenuDto>> getStudentMenuList() {
         Long index = JwtInterceptor.getLoginUser();
         System.out.print(index);
         if(index==null) {
-            index= 1l;
+            ArrayList<StudentMenuDto> Menu=menuService.buildWholeMenu();
+            return Result.success(Menu);
         }
 //        Long index= 1l;
         User user = userService.findUserByIndex(index);

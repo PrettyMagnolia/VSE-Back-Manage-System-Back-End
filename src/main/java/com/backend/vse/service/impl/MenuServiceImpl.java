@@ -63,6 +63,23 @@ public class MenuServiceImpl implements MenuService {
         return result;
     }
 
+    @Override
+    public ArrayList<StudentMenuDto> buildWholeMenu() {
+        List<Experiment> experiments=experimentMapper.selectAllExperiments();
+        ArrayList<StudentMenuDto> result=new ArrayList<>();
+        for (Experiment experiment: experiments) {
+            StudentMenuDto studentMenuDto=new StudentMenuDto();
+            studentMenuDto.setId(experiment.getExperimentId());
+            studentMenuDto.setTitle(experiment.getExperimentName());
+            studentMenuDto.setName(experiment.getName());
+            studentMenuDto.setKind(experiment.getKind());
+            studentMenuDto.setContent(null);
+            studentMenuDto.setFile(null);
+            result.add(studentMenuDto);
+        }
+        return result;
+    }
+
     // 获取菜单子项
     @Override
     public ArrayList<HashMap<String, Object>> getCourseSubmenu(long courseId) {
