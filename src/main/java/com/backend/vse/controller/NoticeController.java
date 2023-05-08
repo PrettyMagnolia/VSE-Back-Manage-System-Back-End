@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 
 
-@Api(tags = {"coursenotice"})
+@Api(tags = {"courseNotice"})
 @RestController
 public class NoticeController {
     @Autowired
