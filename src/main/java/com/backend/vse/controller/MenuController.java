@@ -10,6 +10,7 @@ import com.backend.vse.interceptor.JwtInterceptor;
 import com.backend.vse.service.MenuService;
 import com.backend.vse.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
@@ -85,9 +86,14 @@ public class MenuController {
         return Result.success(result);
     }
 
+    @ApiOperation("使用token获取实验列表，没有token则返回默认1号用户的列表")
     @GetMapping("student_experiment")
     public Result<ArrayList<StudentMenuDto>> getStudentMenuList() {
         Long index = JwtInterceptor.getLoginUser();
+        System.out.print(index);
+        if(index==null) {
+            index= 1l;
+        }
 //        Long index= 1l;
         User user = userService.findUserByIndex(index);
         ArrayList<StudentMenuDto> Menu=menuService.buildMenuForStudent(user);
