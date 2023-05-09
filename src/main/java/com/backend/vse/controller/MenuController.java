@@ -38,7 +38,7 @@ public class MenuController {
     @Autowired
     private UserService userService;
 
-
+    @ApiOperation("获取教师授课列表")
     @GetMapping("list")
     public Result<JSONArray> getUserMenu() {
         // 获取UserId
