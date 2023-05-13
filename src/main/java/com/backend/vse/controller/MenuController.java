@@ -91,11 +91,10 @@ public class MenuController {
     public Result<ArrayList<StudentMenuDto>> getStudentMenuList() {
         Long index = JwtInterceptor.getLoginUser();
         System.out.print(index);
-        if(index==null) {
+        if(true) {
             ArrayList<StudentMenuDto> Menu=menuService.buildWholeMenu();
             return Result.success(Menu);
         }
-//        Long index= 1l;
         User user = userService.findUserByIndex(index);
         ArrayList<StudentMenuDto> Menu=menuService.buildMenuForStudent(user);
 //        String json = null;

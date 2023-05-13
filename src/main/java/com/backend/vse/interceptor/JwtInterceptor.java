@@ -75,7 +75,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     }
 
     // 对外提供了静态的方法：getLoginUser()来获取User信息
-    public static Long getLoginUser() {
+    public static Long  getLoginUser() {
         return userIndex.get();
     }
 
