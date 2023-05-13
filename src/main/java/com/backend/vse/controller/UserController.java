@@ -12,6 +12,7 @@ import com.backend.vse.service.UserService;
 import com.backend.vse.tools.MailSender;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -97,7 +98,6 @@ public class UserController {
         String password = map.get("password");
         String email = map.get("username");
         // 验证验证码是否正确
-
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         if (Objects.equals(code, operations.get(email))) { // 验证码填写正确
             // 更新用户的密码 和 账户状态
@@ -109,6 +109,23 @@ public class UserController {
         }
     }
 
+    @ApiOperation("用户修改密码")
+    @PostMapping("change-password")
+    public Result<String> changePassword(@ApiParam(name = "password", value = "修改后的密码", required = true)
+                                         @RequestParam("password") String password) {
+        // 从拦截器中获取用户index
+        Long index = JwtInterceptor.getLoginUser();
+        if (index == null) {
+            return Result.fail(10002, "登录信息过期，请重新登录");
+        }
+        User user = userService.findUserByIndex(index);
+        if (user == null) {
+            return Result.fail(10001, "用户不存在");
+        }
+        Integer res = userService.updatePassword(user.getEmail(), password);
+        if (res == 0) return Result.fail(400, "用户修改密码失败");
+        else return Result.success("用户修改密码成功");
+    }
 
     @Autowired
     private OssService ossService;
@@ -118,12 +135,12 @@ public class UserController {
     public Result<Map<String, Object>> changeAvatar(@RequestPart("file") MultipartFile avatar) {
         String url;
         Long userId = JwtInterceptor.getLoginUser();
-        if(userId==null){
-            userId=199L;
+        if (userId == null) {
+            userId = 199L;
         }
         try {
             url = ossService.uploadFile(avatar);
-            userService.updateAvatar(url,userId);
+            userService.updateAvatar(url, userId);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.fail(400, "上传错误");

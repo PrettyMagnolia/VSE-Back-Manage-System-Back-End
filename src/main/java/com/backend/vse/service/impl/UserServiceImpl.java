@@ -51,4 +51,9 @@ public class UserServiceImpl implements UserService {
         studentCourseInfoDto.setExperimentList(experimentScoreDtoList);
         return studentCourseInfoDto;
     }
+
+    @Override
+    public Integer updatePassword(String email, String password) {
+        return userMapper.updatePassword(email, password);
+    }
 }

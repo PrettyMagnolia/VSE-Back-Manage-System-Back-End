@@ -22,5 +22,7 @@ public interface UserService {
 
     Integer activateUserAccount(String email, String password, Byte status);
 
-    void updateAvatar(String url,Long Id);
+    void updateAvatar(String url, Long Id);
+
+    Integer updatePassword(String email, String password);
 }
