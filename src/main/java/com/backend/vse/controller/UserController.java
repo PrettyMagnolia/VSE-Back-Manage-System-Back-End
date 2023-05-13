@@ -71,7 +71,7 @@ public class UserController {
                 redisTemplate.expire(user.getEmail(), 3, TimeUnit.MINUTES);
                 msg = "账户需要激活，验证码已发送";
             }
-            return Result.fail(400, msg);
+            return Result.fail(0, msg);
         }
     }
 
