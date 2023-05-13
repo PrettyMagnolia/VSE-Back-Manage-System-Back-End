@@ -42,7 +42,7 @@ public class MailSender {
         // 通过session得到transport对象
         Transport ts = session.getTransport();
         // 连接邮件服务器：邮箱类型，帐号，授权码代替密码（更安全）
-        ts.connect("smtp.qq.com", "3155002905", "junyuxuudpoadfbe");
+        ts.connect("smtp.qq.com", "3155002905", "blmkcdggktphdgdb");
         // 创建邮件
         Message message = new MimeMessage(session);
         // 指明邮件的发件人
