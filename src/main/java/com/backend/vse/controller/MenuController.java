@@ -44,8 +44,8 @@ public class MenuController {
         // 获取UserId
         Long userId = JwtInterceptor.getLoginUser();
         if (userId == null) {
-//            return Result.fail(4001, "用户未登录或会话过期");
-            userId = 199L;
+            return Result.fail(4001, "用户未登录或会话过期");
+//            userId = 199L;
         }
         User currentUser = userService.findUserByIndex(userId);
         if (currentUser == null) {

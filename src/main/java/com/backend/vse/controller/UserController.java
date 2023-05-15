@@ -136,7 +136,8 @@ public class UserController {
         String url;
         Long userId = JwtInterceptor.getLoginUser();
         if (userId == null) {
-            userId = 199L;
+            // userId = 199L;
+            return Result.fail(4001,"缺失用户ID");
         }
         try {
             url = ossService.uploadFile(avatar);

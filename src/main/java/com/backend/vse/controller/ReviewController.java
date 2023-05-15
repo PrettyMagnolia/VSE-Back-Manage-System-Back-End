@@ -74,7 +74,7 @@ public class ReviewController {
     public Result<Boolean> giveScore(@RequestBody GiveReportScoreDto scoreDto) {
         boolean res = false;
         Long userId = JwtInterceptor.getLoginUser();
-        userId = 199L;
+        // userId = 199L;
         if (userId == null) {
             return Result.fail(400, "用户未登录");
         }
@@ -143,10 +143,12 @@ public class ReviewController {
         try {
             userId = JwtInterceptor.getLoginUser();
         } catch (Exception e) {
-            userId = 199L;
+            // userId = 199L;
+            return Result.fail(4001,"确实用户id");
         }
         if(userId == null){
-            userId = 199L;
+            // userId = 199L;
+            return Result.fail(4001,"确实用户id");
         }
         try {
             Boolean res = reviewService.changeUserBaseInfo(account, userId);
