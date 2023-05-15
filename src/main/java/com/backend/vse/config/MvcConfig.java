@@ -22,7 +22,11 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/review/change-userinfo")
                 .addPathPatterns("/report/submit")
                 .addPathPatterns("/user/change-avatar")
-                .addPathPatterns("/change-password");
+                .addPathPatterns("/change-password")
+                .addPathPatterns("/addcourse")
+                .addPathPatterns("/courses")
+                .addPathPatterns("/coursescore")
+                .addPathPatterns("/studentscore");
     }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

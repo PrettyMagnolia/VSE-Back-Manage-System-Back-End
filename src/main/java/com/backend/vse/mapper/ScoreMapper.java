@@ -11,7 +11,7 @@ import java.util.List;
 
 @Mapper
 public interface ScoreMapper extends BaseMapper<Score> {
-    @Select("SELECT * FROM score JOIN user USING(`index`) WHERE course_id=#{courseId}")
+    @Select("SELECT * FROM score RIGHT OUTER JOIN student_attend_course USING(course_id) JOIN `user` WHERE course_id=#{courseId} AND `user`.`index`=student_attend_course.`index`")
     @Results(
             {
                     //column为数据库字段名，property为实体类字段名
