@@ -18,6 +18,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor())
                 .addPathPatterns("/account")
                 .addPathPatterns("/menu/list")
+                .addPathPatterns("/menu/student_experiment")
                 .addPathPatterns("/review/score")
                 .addPathPatterns("/review/change-userinfo")
                 .addPathPatterns("/report/submit")
