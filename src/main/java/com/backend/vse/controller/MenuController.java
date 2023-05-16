@@ -91,7 +91,7 @@ public class MenuController {
     public Result<ArrayList<StudentMenuDto>> getStudentMenuList() {
         Long index = JwtInterceptor.getLoginUser();
         System.out.print(index);
-        if(true) {
+        if(index==null) {
             ArrayList<StudentMenuDto> Menu=menuService.buildWholeMenu();
             return Result.success(Menu);
         }
