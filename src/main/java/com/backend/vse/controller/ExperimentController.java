@@ -70,11 +70,12 @@ public class ExperimentController {
                                                                  @PathVariable("experimentId") Long experimentId) {
         Long index = JwtInterceptor.getLoginUser();
         String file = "";
+        System.out.print(index);
         if(index!=null){
             file=experimentService.findInstructorByIndexAndExperiment(index,experimentId);
         }
         ExperimentContentDto experimentContentDto = experimentService.selectExperimentContentById(experimentId);
-        experimentContentDto.setContent(file);
+        experimentContentDto.setFile(file);
         return Result.success(experimentContentDto);
     }
 
