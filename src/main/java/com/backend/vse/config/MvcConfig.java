@@ -17,6 +17,7 @@ public class MvcConfig implements WebMvcConfigurer {
         // 拦截除了登录login的所有资源
         registry.addInterceptor(jwtInterceptor())
                 .addPathPatterns("/account")
+                .addPathPatterns("/experiment")
                 .addPathPatterns("/menu/list")
                 .addPathPatterns("/menu/student_experiment")
                 .addPathPatterns("/review/score")

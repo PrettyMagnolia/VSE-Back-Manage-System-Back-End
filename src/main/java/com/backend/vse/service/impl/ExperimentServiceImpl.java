@@ -1,12 +1,10 @@
 package com.backend.vse.service.impl;
 
-import com.backend.vse.dto.ExperimentBriefInfo;
-import com.backend.vse.dto.ExperimentContentDto;
-import com.backend.vse.dto.ExperimentDto;
-import com.backend.vse.dto.ExperimentTemplateDto;
+import com.backend.vse.dto.*;
 import com.backend.vse.entity.CourseExperiment;
 import com.backend.vse.entity.Experiment;
 import com.backend.vse.mapper.ExperimentMapper;
+import com.backend.vse.mapper.StudentAttendCourseMapper;
 import com.backend.vse.service.ExperimentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +17,9 @@ import java.util.stream.Collectors;
 public class ExperimentServiceImpl implements ExperimentService {
     @Autowired
     ExperimentMapper experimentMapper;
+
+    @Autowired
+    StudentAttendCourseMapper studentAttendCourseMapper;
 
     @Override
     public List<Experiment> selectAllExperiments() {
@@ -102,5 +103,18 @@ public class ExperimentServiceImpl implements ExperimentService {
     @Override
     public int updateExperimentTemplate(Long courseId, Long experimentId, String template) {
         return experimentMapper.updateExperimentTemplate(courseId, experimentId, template);
+    }
+
+    @Override
+    public String findInstructorByIndexAndExperiment(Long index, Long experimentId) {
+        String file="";
+        ArrayList<CourseExperiment> course_experiments= studentAttendCourseMapper.getExperimentByIndex(index);
+        for (CourseExperiment courseExperiment: course_experiments) {
+            Experiment experiment=experimentMapper.selectExperimentById(courseExperiment.getExperimentId());
+            if(experimentId==experiment.getExperimentId()) {
+                file = courseExperiment.getInstructor();
+            }
+        }
+        return file;
     }
 }
