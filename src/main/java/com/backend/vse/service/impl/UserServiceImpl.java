@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
     private ExperimentMapper experimentMapper;
 
     @Override
-    public User findUserByIdAndSchool(String email, String school, String password) {
-        return userMapper.selectByIDAndSchool(email, school, password);
+    public User findUserByIdAndSchool(String email, String school) {
+        return userMapper.selectByIDAndSchool(email, school);
     }
 
     @Override

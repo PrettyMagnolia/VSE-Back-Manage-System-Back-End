@@ -85,8 +85,8 @@ public class ExperimentController {
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         CourseExperiment courseExperiment = new CourseExperiment(courseId, experimentId, startTime, endTime, score, null, null);
         int res = experimentService.modifyExperimentInCourse(courseExperiment);
-        if (res == 0) return Result.fail(400, "修改失败");
-        else return Result.success("修改成功");
+        if (res == 0) return Result.fail(400, "修改实验失败");
+        else return Result.success("修改实验成功");
     }
 
     @ApiOperation("根据课程id和实验id，删除课程中的实验")
@@ -107,9 +107,9 @@ public class ExperimentController {
         ArrayList<String> experimentIdList = (ArrayList<String>) map.get("experimentIdList");
         for (String experimentId : experimentIdList) {
             int res = experimentService.insertExperimentInCourse(Long.valueOf(courseId), Long.valueOf(experimentId));
-            if (res == 0) return Result.fail(400, "插入失败");
+            if (res == 0) return Result.fail(400, "添加实验失败");
         }
-        return Result.success("插入成功");
+        return Result.success("添加实验成功");
     }
 
     @ApiOperation("上传实验指导书")

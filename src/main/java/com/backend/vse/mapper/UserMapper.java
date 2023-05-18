@@ -19,8 +19,8 @@ import org.apache.ibatis.annotations.Update;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-    @Select("SELECT * FROM user WHERE email = '${email}' AND school='${school}' AND password='${password}'")
-    User selectByIDAndSchool(@Param("email") String email, @Param("school") String school, @Param("password") String password);
+    @Select("SELECT * FROM user WHERE email = '${email}' AND school='${school}'")
+    User selectByIDAndSchool(@Param("email") String email, @Param("school") String school);
 
     @Select("SELECT * FROM user WHERE id=#{id} AND school=#{school}")
     User selectByStuIdAndSchool(@Param("id") Long id, @Param("school") String school);

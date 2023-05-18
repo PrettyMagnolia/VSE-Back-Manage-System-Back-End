@@ -44,9 +44,16 @@ public class UserController {
     @ApiOperation("根据用户的id和学校返回指定用户（登录）")
     @PostMapping("login")
     public Result<Map<String, String>> login(@RequestBody HashMap<String, String> map) throws Exception {
-        User user = userService.findUserByIdAndSchool(map.get("username"), map.get("school"), map.get("password"));
+        String username = map.get("username");
+        String school = map.get("school");
+        String password = map.get("password");
+        User user = userService.findUserByIdAndSchool(map.get("username"), map.get("school"));
+
         if (user == null) {
-            return Result.fail(10001, "用户不存在");
+            return Result.fail(10001, "账号不存在");
+        }
+        if (!Objects.equals(user.getPassword(), password)) {
+            return Result.fail(10001, "密码错误");
         }
 
         if (user.getStatus() == 1) { // 用户账号已激活，成功登录，返回token
