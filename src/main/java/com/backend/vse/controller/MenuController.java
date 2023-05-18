@@ -44,8 +44,8 @@ public class MenuController {
         // 获取UserId
         Long userId = JwtInterceptor.getLoginUser();
         if (userId == null) {
-//            return Result.fail(4001, "用户未登录或会话过期");
-            userId = 199L;
+            return Result.fail(4001, "用户未登录或会话过期");
+//            userId = 199L;
         }
         User currentUser = userService.findUserByIndex(userId);
         if (currentUser == null) {
@@ -91,12 +91,14 @@ public class MenuController {
     public Result<ArrayList<StudentMenuDto>> getStudentMenuList() {
         Long index = JwtInterceptor.getLoginUser();
         System.out.print(index);
-        if(true) {
-            ArrayList<StudentMenuDto> Menu=menuService.buildWholeMenu();
+        ArrayList<StudentMenuDto> Menu;
+        if(index==null) {
+            Menu=menuService.buildWholeMenu();
             return Result.success(Menu);
+        }else{
+            User user = userService.findUserByIndex(index);
+            Menu=menuService.buildMenuForStudent(user);
         }
-        User user = userService.findUserByIndex(index);
-        ArrayList<StudentMenuDto> Menu=menuService.buildMenuForStudent(user);
 //        String json = null;
 //        try {
 //            ClassPathResource resource = new ClassPathResource("json/routes.json");

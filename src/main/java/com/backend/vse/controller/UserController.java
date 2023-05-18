@@ -78,7 +78,7 @@ public class UserController {
                 redisTemplate.expire(user.getEmail(), 3, TimeUnit.MINUTES);
                 msg = "账户需要激活，验证码已发送";
             }
-            return Result.fail(400, msg);
+            return Result.fail(0, msg);
         }
     }
 
@@ -143,7 +143,8 @@ public class UserController {
         String url;
         Long userId = JwtInterceptor.getLoginUser();
         if (userId == null) {
-            userId = 199L;
+            // userId = 199L;
+            return Result.fail(4001,"缺失用户ID");
         }
         try {
             url = ossService.uploadFile(avatar);

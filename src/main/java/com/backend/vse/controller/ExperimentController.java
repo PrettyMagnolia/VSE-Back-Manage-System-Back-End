@@ -7,9 +7,12 @@ import com.backend.vse.dto.ExperimentDto;
 import com.backend.vse.dto.ExperimentTemplateDto;
 import com.backend.vse.entity.CourseExperiment;
 import com.backend.vse.entity.Experiment;
+import com.backend.vse.entity.User;
+import com.backend.vse.interceptor.JwtInterceptor;
 import com.backend.vse.mapper.ExperimentMapper;
 import com.backend.vse.service.ExperimentService;
 import com.backend.vse.service.OssService;
+import com.backend.vse.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -35,6 +38,9 @@ public class ExperimentController {
 
     @Autowired
     private OssService ossService;
+
+    @Autowired
+    private UserService userService;
 
     @ApiOperation("获取所有实验信息")
     @GetMapping("allexperiment")
@@ -62,7 +68,14 @@ public class ExperimentController {
     @GetMapping("experiment/{experimentId}")
     public Result<ExperimentContentDto> getExperimentContentById(@ApiParam(name = "experimentId", value = "实验id", required = true)
                                                                  @PathVariable("experimentId") Long experimentId) {
+        Long index = JwtInterceptor.getLoginUser();
+        String file = "";
+        System.out.print(index);
+        if(index!=null){
+            file=experimentService.findInstructorByIndexAndExperiment(index,experimentId);
+        }
         ExperimentContentDto experimentContentDto = experimentService.selectExperimentContentById(experimentId);
+        experimentContentDto.setFile(file);
         return Result.success(experimentContentDto);
     }
 

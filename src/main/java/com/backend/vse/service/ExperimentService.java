@@ -25,4 +25,6 @@ public interface ExperimentService {
 
     int updateExperimentInstructor(Long courseId, Long experimentId, String instructor);
     int updateExperimentTemplate(Long courseId, Long experimentId, String template);
+
+    String findInstructorByIndexAndExperiment(Long index, Long experimentId);
 }

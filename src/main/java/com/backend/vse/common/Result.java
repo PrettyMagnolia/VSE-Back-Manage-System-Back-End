@@ -20,7 +20,7 @@ public class Result<T> {
     }
 
     public static <T> Result<T> fail(int code, String msg) {
-        return new Result<>(true, code, msg, null);
+        return new Result<>(false, code, msg, null);
     }
 
 }

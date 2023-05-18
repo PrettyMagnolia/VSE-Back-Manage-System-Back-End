@@ -9,6 +9,7 @@ import com.backend.vse.entity.Course;
 import com.backend.vse.entity.StudentAttendCourse;
 import com.backend.vse.entity.TeacherTeachCourse;
 import com.backend.vse.entity.User;
+import com.backend.vse.interceptor.JwtInterceptor;
 import com.backend.vse.mapper.StudentAttendCourseMapper;
 import com.backend.vse.mapper.UserMapper;
 import com.backend.vse.service.CourseService;
@@ -38,10 +39,14 @@ public class CourseController {
     @PostMapping("addcourse")
     public Result<String> postOneCourse(@RequestBody NewCourseDto newCourseDto)
     {
+        Long teacherIndex = JwtInterceptor.getLoginUser();
+        List<Long> teacherList = new ArrayList<>();
+        teacherList.add(teacherIndex);
+        newCourseDto.setTeacherList(teacherList);
+
         String courseName = newCourseDto.getCourseName();
         String semester = newCourseDto.getSemester();;
         List<ImportedStudentDto> studentList = newCourseDto.getStudentList();
-        List<Long> teacherList = newCourseDto.getTeacherList();
         int year = newCourseDto.getYear();
         //涉及到多个CRUD，注意事务回滚！
         //1.先插入课程表
@@ -103,6 +108,8 @@ public class CourseController {
     public Result<List<CourseBasicInfoDto>> postOneCourse(@ApiParam(name="index", value="教师index", required = true)
                                         @RequestParam("index") Long index)
     {
+        index = JwtInterceptor.getLoginUser();
+
         List<CourseBasicInfoDto> courseBasicInfoDtoList = courseService.getCoursesByTeacher(index);
         //按时间降序输出，dto类已实现Comparable接口
         List<CourseBasicInfoDto> reverseList = courseBasicInfoDtoList.stream()

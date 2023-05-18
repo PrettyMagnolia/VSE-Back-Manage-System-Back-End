@@ -42,6 +42,9 @@ public class ScoreServiceImpl implements ScoreService {
             List<SingleExperimentScoreDto> singleExperimentScoreDtoList = scoreMapper.selectSingleExperimentScoreDto(index, courseId);
             //给该学生的每个实验填上maxScore
             for(SingleExperimentScoreDto s : singleExperimentScoreDtoList){
+                if(index == 42){
+                    System.out.println("hym");
+                }
                 Long experimentId = s.getExperimentId();
                 int maxScore = maxScoreMap!=null ? maxScoreMap.get(experimentId) : 0;
                 s.setMaxScore(maxScore);
