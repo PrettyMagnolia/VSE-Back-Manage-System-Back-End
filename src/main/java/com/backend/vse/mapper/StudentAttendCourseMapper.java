@@ -40,4 +40,9 @@ public interface StudentAttendCourseMapper extends BaseMapper<StudentAttendCours
             "ON student_attend_course.course_id = course_experiment.course_id " +
             "WHERE student_attend_course.index = #{index};")
     ArrayList<CourseExperiment> getExperimentByIndex(long index);
+
+    @Select("SELECT *" +
+            "FROM student_attend_course " +
+            "WHERE student_attend_course.index = #{index};")
+    ArrayList<StudentAttendCourse> getCourseByIndex(long index);
 }

@@ -4,7 +4,9 @@ import com.backend.vse.common.Result;
 import com.backend.vse.dto.ExperimentSubmitDto;
 import com.backend.vse.entity.ExperimentReview;
 import com.backend.vse.entity.ExperimentSubmit;
+import com.backend.vse.entity.StudentAttendCourse;
 import com.backend.vse.interceptor.JwtInterceptor;
+import com.backend.vse.service.CourseService;
 import com.backend.vse.service.OssService;
 import com.backend.vse.service.ReportService;
 import io.swagger.annotations.Api;
@@ -34,11 +36,12 @@ public class ReportController {
     @Autowired
     OssService ossService;
 
+    CourseService courseService;
+
 
     @ApiOperation("学生提交一份报告")
     @PostMapping(value = "submit", consumes = {MediaType.ALL_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public Result<ExperimentSubmit> studentSubmitReport(
-            @RequestPart("course_id") String cId,
             @RequestPart("experiment_id") String eId,
             @RequestPart("submit_time") String sTime,
             @RequestPart(value = "report") MultipartFile report,
@@ -47,7 +50,6 @@ public class ReportController {
         long courseId, experimentId;
         Timestamp submitTime = null;
         try {
-            courseId = Long.parseUnsignedLong(cId);
             experimentId = Long.parseUnsignedLong(eId);
             submitTime = Timestamp.valueOf(sTime);
         } catch (Exception e) {
@@ -69,6 +71,8 @@ public class ReportController {
                 return Result.fail(400, "缺失用户ID");
             }
         }
+        StudentAttendCourse studentAttendCourse=courseService.getCourseByIndex(userId);
+        courseId=studentAttendCourse.getCourseId();
 
         ExperimentSubmit submit = new ExperimentSubmit();
         submit.setIndex(userId);

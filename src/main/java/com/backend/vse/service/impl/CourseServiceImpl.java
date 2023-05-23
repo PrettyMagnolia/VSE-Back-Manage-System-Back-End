@@ -13,6 +13,7 @@ import com.backend.vse.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,5 +64,12 @@ public class CourseServiceImpl implements CourseService {
                 .map(course -> new CourseBasicInfoDto(course))
                 .collect(Collectors.toList());
         return courseBasicInfoDtoList;
+    }
+
+    @Override
+    public StudentAttendCourse getCourseByIndex(Long index) {
+        ArrayList<StudentAttendCourse> courses=studentAttendCourseMapper.getCourseByIndex(index);
+        return courses.get(0);
+
     }
 }
