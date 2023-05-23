@@ -36,6 +36,7 @@ public class ReportController {
     @Autowired
     OssService ossService;
 
+    @Autowired
     CourseService courseService;
 
 
@@ -71,8 +72,10 @@ public class ReportController {
                 return Result.fail(400, "缺失用户ID");
             }
         }
+//        userId=100l;
         StudentAttendCourse studentAttendCourse=courseService.getCourseByIndex(userId);
         courseId=studentAttendCourse.getCourseId();
+//        System.out.print(courseId+"\n");
 
         ExperimentSubmit submit = new ExperimentSubmit();
         submit.setIndex(userId);
