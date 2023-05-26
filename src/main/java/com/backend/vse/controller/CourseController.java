@@ -66,7 +66,7 @@ public class CourseController {
             //如果没有这个学生，就现加这个学生
             if(stu == null){
                 int res = userMapper.insertUser(0L,id,item.getName(),"111111",0,
-                        item.getGender(),item.getEmail(),school, (byte) 0, (byte) 1,
+                        item.getGender(),item.getEmail(),school, (byte) 0, (byte) 0,
                         "https://pic1.zhimg.com/v2-c0649aa7bd799ee4beefa8098ca7cf16_r.jpg?source=1940ef5c");
                 stu = userMapper.selectByStuIdAndSchool(id, school);
             }
