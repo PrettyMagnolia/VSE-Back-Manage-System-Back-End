@@ -7,6 +7,7 @@ import com.backend.vse.entity.User;
 import com.backend.vse.common.Result;
 import com.backend.vse.interceptor.JwtInterceptor;
 import com.backend.vse.interceptor.util.JwtUtil;
+import com.backend.vse.service.CourseService;
 import com.backend.vse.service.OssService;
 import com.backend.vse.service.UserService;
 import com.backend.vse.tools.MailSender;
@@ -37,6 +38,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CourseService courseService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -93,7 +97,7 @@ public class UserController {
         }
 
         Account account = new Account(user.getName(), user.getAge(), user.getGender(), user.getEmail(), user.getAvatar());
-        UserInfo userInfo = new UserInfo(account, new String[]{"edit", "delete", "add"}, user.getRole());
+        UserInfo userInfo = new UserInfo(account,courseService.getCourseInfoByIndex(index) ,new String[]{"edit", "delete", "add"}, user.getRole());
 
         return Result.success(userInfo);
     }

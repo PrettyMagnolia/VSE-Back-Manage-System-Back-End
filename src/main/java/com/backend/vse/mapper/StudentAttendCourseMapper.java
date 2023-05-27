@@ -1,5 +1,6 @@
 package com.backend.vse.mapper;
 
+import com.backend.vse.dto.CourseBasicInfoDto;
 import com.backend.vse.dto.StudentInfoDto;
 import com.backend.vse.dto.StudentSimpleDto;
 import com.backend.vse.entity.CourseExperiment;
@@ -34,15 +35,22 @@ public interface StudentAttendCourseMapper extends BaseMapper<StudentAttendCours
             "  AND course_id = #{courseId} " +
             ");")
     ArrayList<StudentInfoDto> getCourseFreeStudents(long courseId);
-    @Select("SELECT *" +
+    @Select("SELECT * " +
             "FROM student_attend_course " +
             "INNER JOIN course_experiment " +
             "ON student_attend_course.course_id = course_experiment.course_id " +
             "WHERE student_attend_course.index = #{index};")
     ArrayList<CourseExperiment> getExperimentByIndex(long index);
 
-    @Select("SELECT *" +
+    @Select("SELECT * " +
             "FROM student_attend_course " +
             "WHERE student_attend_course.index = #{index};")
     ArrayList<StudentAttendCourse> getCourseByIndex(long index);
+
+    @Select("SELECT course.course_id, course.course_name, course.semester, course.year " +
+            "FROM student_attend_course " +
+            "JOIN course ON student_attend_course.course_id = course.course_id " +
+            "WHERE student_attend_course.index = #{index} " +
+            "LIMIT 1;")
+    CourseBasicInfoDto getCourseInfoByIndex(long index);
 }
