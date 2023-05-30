@@ -17,4 +17,6 @@ public interface CourseService {
     int insertOneAttend(StudentAttendCourse studentAttendCourse);
     List<CourseBasicInfoDto> getCoursesByTeacher(Long index);
     StudentAttendCourse getCourseByIndex(Long index);
+
+    CourseBasicInfoDto getCourseInfoByIndex(Long index);
 }

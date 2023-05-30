@@ -16,6 +16,7 @@ import javax.management.relation.Role;
 @NoArgsConstructor
 public class UserInfo {
     private Account account;
+    private CourseBasicInfoDto course;
     private String[] permissions;
     private Byte role;
 

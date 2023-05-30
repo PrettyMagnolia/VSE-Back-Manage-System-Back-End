@@ -72,4 +72,10 @@ public class CourseServiceImpl implements CourseService {
         return courses.get(0);
 
     }
+
+    @Override
+    public CourseBasicInfoDto getCourseInfoByIndex(Long index) {
+        CourseBasicInfoDto courseBasicInfo=studentAttendCourseMapper.getCourseInfoByIndex(index);
+        return courseBasicInfo;
+    }
 }
