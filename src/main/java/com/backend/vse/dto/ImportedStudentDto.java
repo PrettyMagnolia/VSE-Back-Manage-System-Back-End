@@ -17,6 +17,6 @@ public class ImportedStudentDto {
     String name;
     @JsonProperty("性别")
     String gender;
-    @JsonProperty("邮件")
+    @JsonProperty("邮箱")
     String email;
 }
