@@ -11,7 +11,7 @@ spring:
     url: jdbc:mysql://139.196.226.104:3306/vse?useSSL=false&serverTimezone=Asia/Shanghai
     username: lyf
     password: Lyf415926
-  mail:
+  mail: #邮箱smtp服务配置
     host: smtp.qq.com #???????
     username: 417695971@qq.com #QQ??
     password: drvvnzlqxbddcahd #??????
@@ -46,7 +46,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 aliyun:
-  oss:
+  oss: #阿里云oss服务配置
     endpoint: oss-cn-shanghai.aliyuncs.com
     accessKeyId: LTAI5tATBtZizUEmV6A64EAM
     accessKeySecret: drBE1YKrafkP0jKpGeLxPI4ZrRpfMY
