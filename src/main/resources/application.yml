@@ -12,10 +12,10 @@ spring:
     username: lyf
     password: Lyf415926
   mail: #邮箱smtp服务配置
-    host: smtp.qq.com #???????
-    username: 417695971@qq.com #QQ??
-    password: drvvnzlqxbddcahd #??????
-    protocol: smtp #??????
+    host: smtp.qq.com #服务器邮箱地址，由邮箱官方提供
+    username: 417695971@qq.com #账号
+    password: drvvnzlqxbddcahd #授权码
+    protocol: smtp #一般无需修改
     default-encoding: utf-8
   # redis配置
   redis:
