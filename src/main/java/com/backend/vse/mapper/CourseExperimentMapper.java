@@ -11,6 +11,4 @@ public interface CourseExperimentMapper extends BaseMapper<CourseExperiment> {
     @Select("SELECT * FROM course_experiment " +
             "WHERE course_id = #{courseId} AND experiment_id = #{experimentId} LIMIT 1")
     CourseExperiment getOneCourseExperiment(@Param("courseId") Long courseId, @Param("experimentId") Long experimentId);
-
-
 }

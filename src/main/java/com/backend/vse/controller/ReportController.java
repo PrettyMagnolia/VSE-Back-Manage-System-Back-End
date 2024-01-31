@@ -1,28 +1,28 @@
 package com.backend.vse.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.backend.vse.common.Result;
 import com.backend.vse.dto.ExperimentSubmitDto;
-import com.backend.vse.entity.ExperimentReview;
 import com.backend.vse.entity.ExperimentSubmit;
 import com.backend.vse.entity.StudentAttendCourse;
 import com.backend.vse.interceptor.JwtInterceptor;
 import com.backend.vse.service.CourseService;
 import com.backend.vse.service.OssService;
 import com.backend.vse.service.ReportService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import net.sf.jsqlparser.util.validation.metadata.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Date;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -38,7 +38,6 @@ public class ReportController {
 
     @Autowired
     CourseService courseService;
-
 
     @ApiOperation("学生提交一份报告")
     @PostMapping(value = "submit", consumes = {MediaType.ALL_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -62,7 +61,6 @@ public class ReportController {
             return Result.fail(400, "文件存储系统异常");
         }
 
-
         Long userId = JwtInterceptor.getLoginUser();
         if (userId == null) {
             try {
@@ -73,8 +71,8 @@ public class ReportController {
             }
         }
 //        userId=100l;
-        StudentAttendCourse studentAttendCourse=courseService.getCourseByIndex(userId);
-        courseId=studentAttendCourse.getCourseId();
+        StudentAttendCourse studentAttendCourse = courseService.getCourseByIndex(userId);
+        courseId = studentAttendCourse.getCourseId();
 //        System.out.print(courseId+"\n");
 
         ExperimentSubmit submit = new ExperimentSubmit();
@@ -97,6 +95,63 @@ public class ReportController {
         }
     }
 
+    @ApiOperation("学生提交实验数据")
+    @PostMapping(value = "submitData")
+    public Result<Object> studentSubmitData(
+//            @RequestBody Map<String, Object> dynamicJson
+            @RequestBody JSONObject dynamicJson
+    ) {
+        Process proc;
+        String currentWorkingDirectory = System.getProperty("user.dir");
+        String pythonScriptPath = currentWorkingDirectory+"\\src\\main\\resources\\"+"fillExpTemplate.py";
+        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            String jsonString = objectMapper.writeValueAsString(dynamicJson);
+//            System.out.println("jsonString: "+jsonString);
+            String jsonString = dynamicJson.toString();
+            StringBuilder result = new StringBuilder();
+            System.out.println("jsonString: "+jsonString);
+            for (int i = 0; i < jsonString.length(); i++) {
+                char currentChar = jsonString.charAt(i);
+                result.append(currentChar);
+
+                // 如果当前字符是双引号，前方插入\
+                if (currentChar == '"' && i > 0 && i < jsonString.length() - 1) {
+                    result.insert(result.length() - 1, '\\');
+                }
+            }
+            System.out.println(result);
+            System.out.println("python "+pythonScriptPath +" "+"\""+result+"\"");
+            proc = Runtime.getRuntime().exec("python "+pythonScriptPath +" "+"\""+result+"\"");
+            BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            String line = null;
+            String allLine = "";
+            while ((line = in.readLine()) != null) {
+                System.out.println(line);
+//                allLine += line;
+            }
+//            System.out.println("alline:\n"+allLine);
+            in.close();
+            proc.waitFor();
+            return Result.success(allLine);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Result.fail(400, "文件存储系统异常");
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return Result.fail(400, "文件存储系统异常");
+
+        }
+//        String currentWorkingDirectory = System.getProperty("user.dir");
+//        String pythonScriptPath = currentWorkingDirectory+"\\"+"fillExpTemplate.py";
+//        List<String> scriptArguments = Arrays.asList(dynamicJson.toString());
+//
+//        int exitCode = PythonRunner.runScript(pythonScriptPath, scriptArguments);
+//
+//        System.out.println("Python脚本执行完毕，退出码：" + exitCode);
+
+    }
 //    @ApiOperation("学生提交一份报告")
 //    @PostMapping("studentSubmit")
 //    public Result<String> studentSubmit(@ApiParam(name="index", value="提交者序号", required = true)
@@ -157,4 +212,6 @@ public class ReportController {
         ExperimentSubmitDto experimentSubmitDto = reportService.selectByIndexAndExperimentId(index, reportId);
         return Result.success(experimentSubmitDto);
     }
+
+
 }
