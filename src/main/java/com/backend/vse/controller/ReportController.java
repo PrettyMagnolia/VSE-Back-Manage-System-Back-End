@@ -105,7 +105,7 @@ public class ReportController {
         String pythonScriptPath = currentWorkingDirectory+"/src/main/resources/"+"fillExpTemplate.py";
         // 若当前环境为生产环境
         if("production".equals(System.getProperty("env"))){
-            pythonScriptPath =currentWorkingDirectory+ "fillExpTemplate.py";
+            pythonScriptPath =currentWorkingDirectory+ "/fillExpTemplate.py";
         }
         System.out.println(pythonScriptPath);
         System.out.println(currentWorkingDirectory);
