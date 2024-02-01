@@ -133,8 +133,11 @@ public class ReportController {
 //                proc = Runtime.getRuntime().exec(cmd);
 //            }else{
             System.out.println("现在执行:\n"+"python "+pythonScriptPath +" "+"\""+result+"\"");
-
-            proc = Runtime.getRuntime().exec("python "+pythonScriptPath +" "+"\""+result+"\"");
+            if("production".equals(System.getProperty("env"))) {
+                proc = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", "python " + pythonScriptPath + " " + "\"" + result + "\""});
+            }else {
+                proc = Runtime.getRuntime().exec("python " + pythonScriptPath + " " + "\"" + result + "\"");
+            }
 //            }
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line = null;
