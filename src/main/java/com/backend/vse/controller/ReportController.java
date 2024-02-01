@@ -107,8 +107,8 @@ public class ReportController {
         if("production".equals(System.getProperty("env"))){
             pythonScriptPath =currentWorkingDirectory+ "/fillExpTemplate.py";
         }
-        System.out.println(pythonScriptPath);
-        System.out.println(currentWorkingDirectory);
+//        System.out.println(pythonScriptPath);
+//        System.out.println(currentWorkingDirectory);
         try {
 //            ObjectMapper objectMapper = new ObjectMapper();
 //            String jsonString = objectMapper.writeValueAsString(dynamicJson);
@@ -137,7 +137,7 @@ public class ReportController {
                 System.out.println(line);
                 returnCode += line;
             }
-//            System.out.println("returnCode:\n"+returnCode);
+            System.out.println("returnCode:\n"+returnCode);
             in.close();
             proc.waitFor();
             return Result.success(returnCode);

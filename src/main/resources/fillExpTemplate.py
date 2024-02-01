@@ -53,9 +53,9 @@ def upload_to_oss(out_final_path):
 
 if __name__ == '__main__':
     expData = sys.argv[1]
-
+    print(expData)
     expDict = json.loads(expData)
-
+    print(expDict)
     template_docx = f'{expDict["experiment_id"]}-template.docx'
     timeArray = time.localtime(expDict['submit_time']/1000)
     localTime = time.strftime("%y%m%d", timeArray)
