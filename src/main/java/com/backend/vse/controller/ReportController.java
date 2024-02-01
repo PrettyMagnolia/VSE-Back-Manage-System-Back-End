@@ -97,7 +97,6 @@ public class ReportController {
     @ApiOperation("学生提交实验数据")
     @PostMapping(value = "submitData")
     public Result<Object> studentSubmitData(
-//            @RequestBody Map<String, Object> dynamicJson
             @RequestBody JSONObject dynamicJson
     ) {
         Process proc;
@@ -109,7 +108,7 @@ public class ReportController {
 //            System.out.println("jsonString: "+jsonString);
             String jsonString = dynamicJson.toString();
             StringBuilder result = new StringBuilder();
-            System.out.println("jsonString: "+jsonString);
+//            System.out.println("jsonString: "+jsonString);
             // 转义
             for (int i = 0; i < jsonString.length(); i++) {
                 char currentChar = jsonString.charAt(i);
@@ -125,22 +124,22 @@ public class ReportController {
             proc = Runtime.getRuntime().exec("python "+pythonScriptPath +" "+"\""+result+"\"");
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line = null;
-            String allLine = "";
+            String returnCode = "";
             while ((line = in.readLine()) != null) {
                 System.out.println(line);
-//                allLine += line;
+                returnCode += line;
             }
-//            System.out.println("alline:\n"+allLine);
+            System.out.println("returnCode:\n"+returnCode);
             in.close();
             proc.waitFor();
-            return Result.success(allLine);
+            return Result.success(returnCode);
         } catch (IOException e) {
             e.printStackTrace();
-            return Result.fail(400, "文件存储系统异常");
+            return Result.fail(400, e.getCause().toString());
 
         } catch (InterruptedException e) {
             e.printStackTrace();
-            return Result.fail(400, "文件存储系统异常");
+            return Result.fail(400, e.getCause().toString());
 
         }
 //        String currentWorkingDirectory = System.getProperty("user.dir");
