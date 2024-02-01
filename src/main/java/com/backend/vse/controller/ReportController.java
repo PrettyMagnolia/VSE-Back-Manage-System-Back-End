@@ -38,6 +38,7 @@ public class ReportController {
     @Autowired
     CourseService courseService;
 
+
     @ApiOperation("学生提交一份报告")
     @PostMapping(value = "submit", consumes = {MediaType.ALL_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public Result<ExperimentSubmit> studentSubmitReport(
@@ -106,6 +107,7 @@ public class ReportController {
         if("production".equals(System.getProperty("env"))){
             pythonScriptPath = "/workspace/fillExpTemplate.py";
         }
+        System.out.println(pythonScriptPath);
         try {
 //            ObjectMapper objectMapper = new ObjectMapper();
 //            String jsonString = objectMapper.writeValueAsString(dynamicJson);
@@ -134,7 +136,7 @@ public class ReportController {
                 System.out.println(line);
                 returnCode += line;
             }
-            System.out.println("returnCode:\n"+returnCode);
+//            System.out.println("returnCode:\n"+returnCode);
             in.close();
             proc.waitFor();
             return Result.success(returnCode);
@@ -144,7 +146,7 @@ public class ReportController {
 
         } catch (InterruptedException e) {
             e.printStackTrace();
-            return Result.fail(400, e.getCause().toString());
+            return Result.fail(401, e.getCause().toString());
 
         }
 //        String currentWorkingDirectory = System.getProperty("user.dir");
