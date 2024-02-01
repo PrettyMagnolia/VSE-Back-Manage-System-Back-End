@@ -110,6 +110,7 @@ public class ReportController {
             String jsonString = dynamicJson.toString();
             StringBuilder result = new StringBuilder();
             System.out.println("jsonString: "+jsonString);
+            // 转义
             for (int i = 0; i < jsonString.length(); i++) {
                 char currentChar = jsonString.charAt(i);
                 result.append(currentChar);
