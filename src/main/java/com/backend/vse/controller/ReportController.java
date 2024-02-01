@@ -101,7 +101,7 @@ public class ReportController {
     ) {
         Process proc;
         String currentWorkingDirectory = System.getProperty("user.dir");
-        String pythonScriptPath = currentWorkingDirectory+"\\src\\main\\resources\\"+"fillExpTemplate.py";
+        String pythonScriptPath = currentWorkingDirectory+"/src/main/resources/"+"fillExpTemplate.py";
         try {
 //            ObjectMapper objectMapper = new ObjectMapper();
 //            String jsonString = objectMapper.writeValueAsString(dynamicJson);
@@ -119,8 +119,9 @@ public class ReportController {
                     result.insert(result.length() - 1, '\\');
                 }
             }
-            System.out.println(result);
-            System.out.println("python "+pythonScriptPath +" "+"\""+result+"\"");
+//            System.out.println(result);
+//            System.out.println("python "+pythonScriptPath +" "+"\""+result+"\"");
+
             proc = Runtime.getRuntime().exec("python "+pythonScriptPath +" "+"\""+result+"\"");
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line = null;
