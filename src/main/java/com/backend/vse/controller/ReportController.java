@@ -126,10 +126,14 @@ public class ReportController {
                     result.insert(result.length() - 1, '\\');
                 }
             }
-//            System.out.println(result);
+            System.out.println(result);
 //            System.out.println("python "+pythonScriptPath +" "+"\""+result+"\"");
-
-            proc = Runtime.getRuntime().exec("python "+pythonScriptPath +" "+"\""+result+"\"");
+//            if("production".equals(System.getProperty("env"))){
+//                String[] cmd = { "python", pythonScriptPath, jsonString };
+//                proc = Runtime.getRuntime().exec(cmd);
+//            }else{
+                proc = Runtime.getRuntime().exec("python "+pythonScriptPath +" "+"\""+result+"\"");
+//            }
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line = null;
             String returnCode = "";
