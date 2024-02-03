@@ -214,15 +214,15 @@ public class ReportController {
             }
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line = null;
-            String returnCode = "";
+            String returnMsg = "";
             while ((line = in.readLine()) != null) {
                 System.out.println(line);
-                returnCode += line;
+                returnMsg += line;
             }
-            System.out.println("returnCode:\n" + returnCode);
+            System.out.println("returnMsg:\n" + returnMsg);
             in.close();
             proc.waitFor();
-            return Result.success(returnCode);
+            return Result.success(returnMsg);
         } catch (IOException e) {
             e.printStackTrace();
             return Result.fail(400, e.getCause().toString());
