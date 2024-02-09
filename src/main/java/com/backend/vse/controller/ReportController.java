@@ -49,7 +49,7 @@ public class ReportController {
     CourseService courseService;
 
     @ApiOperation("前端上传图片文件到oss")
-    @PostMapping(value = "upload", consumes = {MediaType.ALL_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "upload", consumes = {MediaType.ALL_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public Result<String> uploadImg(
             @RequestPart("experiment_id") String eId,
             @RequestPart(value = "file") MultipartFile file,
