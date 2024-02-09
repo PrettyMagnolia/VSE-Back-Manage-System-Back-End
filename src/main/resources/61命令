@@ -1,0 +1,1 @@
+ python fillExpTemplate.py  "{\"image\":{\"gongxu_img\":\"https://vse1.oss-cn-shanghai.aliyuncs.com/cheems.jpg\"},\"experiment_id\":\"61\",\"submit_time\":1707000725988,\"reporter_id\":\"2052538\",\"reporter_name\":\"陈诺\"}"

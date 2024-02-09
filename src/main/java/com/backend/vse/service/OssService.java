@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface OssService {
     // 上传文件，返回访问URL
     String uploadFile(MultipartFile file);
+    String uploadImg(MultipartFile file,String dir);
 
     String uploadLongText(String content,String key);
 }

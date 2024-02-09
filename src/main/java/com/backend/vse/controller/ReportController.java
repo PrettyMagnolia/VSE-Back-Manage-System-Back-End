@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -31,13 +30,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.Timestamp;
-
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.aliyun.oss.*;
-
 import java.util.Date;
-
-
 import com.aliyun.oss.OSS;
 
 @Api(tags = {"Report"})
@@ -52,7 +47,22 @@ public class ReportController {
 
     @Autowired
     CourseService courseService;
-//
+
+    @ApiOperation("前端上传图片文件到oss")
+    @PostMapping(value = "upload", consumes = {MediaType.ALL_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public Result<String> uploadImg(
+            @RequestPart("experiment_id") String eId,
+            @RequestPart(value = "file") MultipartFile file,
+            HttpServletRequest request
+    ) {
+        String imgUrl = ossService.uploadImg(file,eId);
+        if (imgUrl == null) {
+            return Result.fail(400, "文件存储系统异常");
+        }
+//        System.out.println(imgUrl);
+        return Result.success(imgUrl);
+    }
+//    }
 //    @ApiOperation("学生提交一份报告")
 //    @PostMapping(value = "submit", consumes = {MediaType.ALL_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 //    public Result<ExperimentSubmit> studentSubmitReport(
@@ -206,7 +216,7 @@ public class ReportController {
                 }
             }
 //            System.out.println("result:\n" + result);
-//            System.out.println("现在执行:\n" + "python " + pythonScriptPath + " " + "\"" + result + "\"");
+            System.out.println("现在执行:\n" + "python " + pythonScriptPath + " " + "\"" + result + "\"");
             if ("production".equals(System.getProperty("env"))) {
                 proc = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", "python " + pythonScriptPath + " " + "\"" + result + "\""});
             } else {

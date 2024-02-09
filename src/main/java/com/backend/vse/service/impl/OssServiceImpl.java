@@ -1,5 +1,4 @@
 package com.backend.vse.service.impl;
-
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.ObjectMetadata;
@@ -22,7 +21,6 @@ import java.util.UUID;
  */
 @Service
 public class OssServiceImpl implements OssService {
-
     @Override
     public String uploadFile(MultipartFile file) {
         String endPoint = ConstantPropertiesTools.END_POINT;
@@ -39,11 +37,48 @@ public class OssServiceImpl implements OssService {
                 // 1 在文件名称里面添加随机唯一的值
                 String uuid = UUID.randomUUID().toString().replace("-", "");
                 fileName = uuid + "/" + fileName;
-                // 2 获取当前日期
-                LocalDate date = LocalDate.now();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                String datePath = date.format(formatter);
-                fileName = datePath + "/" + fileName;
+//                // 2 获取当前日期
+//                LocalDate date = LocalDate.now();
+//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//                String datePath = date.format(formatter);
+//                fileName = datePath + "/" + fileName;
+
+                // 设置OSS请求头
+                ObjectMetadata metadata = new ObjectMetadata();
+                String originalFilename = file.getOriginalFilename();
+                String type = originalFilename.substring(originalFilename.lastIndexOf("."));
+                metadata.setContentType(getcontentType(type));
+
+                // 调用OSS方法上传
+                ossClient.putObject(bucketName, fileName, inputStream, metadata);
+
+                String url = "https://" + bucketName + "." + endPoint + '/' + fileName;
+                return url;
+            } catch (Exception e) {
+                return null;
+            } finally {
+                if (ossClient != null) {
+                    ossClient.shutdown();
+                }
+            }
+        }
+        return null;
+    }
+    public String uploadImg(MultipartFile file,String dir) {
+        String endPoint = ConstantPropertiesTools.END_POINT;
+        String accessKeyId = ConstantPropertiesTools.ACCESS_KEY_ID;
+        String accessKeySecret = ConstantPropertiesTools.ACCESS_KEY_SECRET;
+        String bucketName = ConstantPropertiesTools.BUCKET_NAME;
+        if (file != null) {
+            OSS ossClient = new OSSClientBuilder().build(endPoint, accessKeyId, accessKeySecret);
+            try {
+                // 获取输入流
+                InputStream inputStream = file.getInputStream();
+                // 0 获取文件名称
+                String fileName = file.getOriginalFilename();
+                // 1 在文件名称里面添加随机唯一的值
+                String uuid = UUID.randomUUID().toString().replace("-", "");
+                fileName = dir + uuid + "/" + fileName;
 
                 // 设置OSS请求头
                 ObjectMetadata metadata = new ObjectMetadata();
