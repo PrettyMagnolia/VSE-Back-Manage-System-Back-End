@@ -52,12 +52,14 @@ public class ReportController {
     @PutMapping(value = "upload", consumes = {MediaType.ALL_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public Result<String> uploadImg(
             @RequestPart("experiment_id") String eId,
+            @RequestPart("student_id") String sId,
+            @RequestPart("filename") String filename,
             @RequestPart(value = "file") MultipartFile file,
             HttpServletRequest request
     ) {
-        String imgUrl = ossService.uploadImg(file,eId);
+        String imgUrl = ossService.uploadImg(file,eId,sId+'-'+filename);
         if (imgUrl == null) {
-            return Result.fail(400, "文件存储系统异常");
+            return Result.fail(400, "上传失败");
         }
 //        System.out.println(imgUrl);
         return Result.success(imgUrl);

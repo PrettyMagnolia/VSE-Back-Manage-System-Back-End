@@ -16,8 +16,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
- * @author 赵帅涛
- * @date 2023/04/13
+ * @author 赵帅涛，陈诺
+ * @date 2023/04/13 2024/2/9
  */
 @Service
 public class OssServiceImpl implements OssService {
@@ -64,7 +64,7 @@ public class OssServiceImpl implements OssService {
         }
         return null;
     }
-    public String uploadImg(MultipartFile file,String dir) {
+    public String uploadImg(MultipartFile file,String dir,String filename) {
         String endPoint = ConstantPropertiesTools.END_POINT;
         String accessKeyId = ConstantPropertiesTools.ACCESS_KEY_ID;
         String accessKeySecret = ConstantPropertiesTools.ACCESS_KEY_SECRET;
@@ -75,15 +75,16 @@ public class OssServiceImpl implements OssService {
                 // 获取输入流
                 InputStream inputStream = file.getInputStream();
                 // 0 获取文件名称
-                String fileName = file.getOriginalFilename();
+                String fileName = filename;
                 // 1 在文件名称里面添加随机唯一的值
                 String uuid = UUID.randomUUID().toString().replace("-", "");
-                fileName = dir + uuid + "/" + fileName;
+                fileName = dir +'/'+ uuid +'-'+ fileName + ".png";
 
                 // 设置OSS请求头
                 ObjectMetadata metadata = new ObjectMetadata();
                 String originalFilename = file.getOriginalFilename();
-                String type = originalFilename.substring(originalFilename.lastIndexOf("."));
+//                String type = originalFilename.substring(originalFilename.lastIndexOf("."));
+                String type = "png";
                 metadata.setContentType(getcontentType(type));
 
                 // 调用OSS方法上传
@@ -92,6 +93,7 @@ public class OssServiceImpl implements OssService {
                 String url = "https://" + bucketName + "." + endPoint + '/' + fileName;
                 return url;
             } catch (Exception e) {
+                System.out.println(e);
                 return null;
             } finally {
                 if (ossClient != null) {
